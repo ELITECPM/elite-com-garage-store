@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Elite CPM Garage Admin</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>ELITE CPM GARAGE</h1>
+
+  <p>PRIVATE ADMIN PANEL</p>
+
+</header>
+
+<section id="login">
+
+  <h2>ADMIN LOGIN</h2>
+
+  <input id="email" type="email" placeholder="Admin email">
+
+  <input id="password" type="password" placeholder="Password">
+
+  <button class="btn" onclick="loginAdmin()">LOGIN</button>
+
+  <p id="message"></p>
+
+</section>
+
+<section id="dashboard" hidden>
+
+  <h2>STORE MANAGEMENT</h2>
+
+  <input id="carName" placeholder="Car name">
+
+  <input id="carPrice" type="number" placeholder="Price in PKR">
+
+  <input id="carDescription" placeholder="Description">
+
+  <input id="carImage" type="url" placeholder="Car image URL">
+
+  <button class="btn" onclick="addCar()">ADD CAR</button>
+
+  <button class="btn" onclick="logoutAdmin()">LOGOUT</button>
+
+  <div id="adminCars"></div>
+
+</section>
+
+<script src="admin.js"></script>
+
+</body>
+
+</html>
