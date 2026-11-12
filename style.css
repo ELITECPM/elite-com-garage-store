@@ -2,90 +2,101 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 body {
-  background: #080808;
-  color: white;
+  background: #090909;
+  color: #fff;
 }
 
 header {
-  background: #111;
+  background: linear-gradient(135deg, #181818, #080808);
+  padding: 35px 15px;
   text-align: center;
-  padding: 30px 10px;
-  border-bottom: 2px solid red;
+  border-bottom: 3px solid #ff6a00;
 }
 
 header h1 {
-  color: #ff1717;
+  color: #ff6a00;
   font-size: 32px;
-  text-shadow: 0 0 15px red;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px #ff6a00;
 }
 
 header p {
-  color: #ccc;
-  margin-top: 10px;
+  color: #aaa;
+  margin-top: 12px;
+  letter-spacing: 2px;
 }
 
 nav {
   background: #151515;
-  padding: 15px;
+  padding: 18px;
   text-align: center;
 }
 
 nav a {
   color: white;
   text-decoration: none;
-  margin: 0 15px;
+  margin: 0 12px;
   font-weight: bold;
 }
 
 nav a:hover {
-  color: red;
+  color: #ff6a00;
 }
 
 .hero {
+  padding: 90px 20px;
   text-align: center;
-  padding: 80px 20px;
-  background: linear-gradient(135deg, #240000, #080808);
+  background:
+    linear-gradient(90deg, #090909dd, #09090999),
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
+  background-size: cover;
+  background-position: center;
 }
 
 .hero h2 {
-  color: #ff2222;
-  font-size: 30px;
+  color: #ff6a00;
+  font-size: 32px;
   margin-bottom: 15px;
+  text-shadow: 0 0 15px #ff6a00;
 }
 
 .hero p {
-  color: #ddd;
+  color: #eee;
+  font-size: 17px;
   margin-bottom: 25px;
 }
 
-.btn {
-  display: inline-block;
-  background: red;
-  color: white;
-  padding: 12px 20px;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.btn:hover {
-  background: #a00000;
-  box-shadow: 0 0 15px red;
-}
-
 section {
-  padding: 45px 20px;
+  padding: 50px 20px;
   text-align: center;
 }
 
 section h2 {
-  color: red;
+  color: #ff6a00;
   margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+#search,
+#carName,
+#carPrice,
+#carDescription,
+#carImage {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 12px auto;
+  padding: 14px;
+  background: #191919;
+  border: 1px solid #ff6a00;
+  border-radius: 7px;
+  color: white;
+  outline: none;
 }
 
 .car-list {
@@ -96,32 +107,58 @@ section h2 {
 }
 
 .car {
-  background: #171717;
-  border: 1px solid #ff2222;
+  background: linear-gradient(145deg, #202020, #101010);
+  border: 1px solid #ff6a00;
   border-radius: 12px;
-  padding: 15px;
-  width: 280px;
-  box-shadow: 0 0 12px #500000;
+  padding: 16px;
+  width: 290px;
+  box-shadow: 0 0 15px #ff6a0030;
+  transition: 0.3s;
+}
+
+.car:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 0 25px #ff6a0080;
 }
 
 .car img {
   width: 100%;
   border-radius: 8px;
+  object-fit: cover;
 }
 
 .car h3 {
-  color: #ff3333;
-  margin: 12px 0;
+  color: #ff6a00;
+  margin: 13px 0;
 }
 
 .car p {
-  color: #ccc;
+  color: #bbb;
+}
+
+.btn {
+  display: inline-block;
+  background: #ff6a00;
+  color: #080808;
+  padding: 13px 20px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #fff;
+  box-shadow: 0 0 18px #ff6a00;
 }
 
 footer {
   background: #151515;
-  border-top: 2px solid red;
+  border-top: 2px solid #ff6a00;
   text-align: center;
-  padding: 20px;
+  padding: 25px;
   color: #aaa;
 }
