@@ -16,101 +16,57 @@
 
 <body>
 
-  <header>
+<header>
 
-    <h1>ELITE CPM GARAGE</h1>
+  <h1>ELITE CPM GARAGE</h1>
 
-    <p>PREMIUM CAR PARKING MULTIPLAYER STORE</p>
+  <p>PREMIUM CPM CAR STORE</p>
 
-  </header>
+</header>
 
-  <nav>
+<section class="hero">
 
-    <a href="#home">Home</a>
+  <h2>WELCOME TO ELITE CPM GARAGE</h2>
 
-    <a href="#cars">Cars</a>
+  <p>Find Your Dream CPM Car</p>
 
-    <a href="#contact">Contact</a>
+</section>
 
-  </nav>
+<section id="cars">
 
-  <section id="home" class="hero">
+  <h2>AVAILABLE CARS</h2>
 
-    <h2>WELCOME TO ELITE CPM GARAGE</h2>
+  <input id="search" placeholder="Search your car..." oninput="searchCars()">
 
-    <p>Your favourite CPM cars, all in one place!</p>
+  <div id="car-list" class="car-list"></div>
 
-    <a class="btn" href="#cars">Explore Cars</a>
+</section>
 
-  </section>
+<section id="admin">
 
-  <section id="cars">
+  <h2>STORE ADMIN PANEL</h2>
 
-    <h2>OUR CARS</h2>
+  <p>Add cars and manage your store below.</p>
 
-    <div class="car-list">
+  <input id="carName" placeholder="Car name">
 
-      <div class="car">
+  <input id="carPrice" type="number" placeholder="Price in PKR">
 
-        <img src="https://placehold.co/600x350/151515/ffffff?text=BMW+M4" alt="BMW M4">
+  <input id="carDescription" placeholder="Car description">
 
-        <h3>BMW M4</h3>
+  <input id="carImage" type="url" placeholder="Car image URL">
 
-        <p>Premium CPM car</p>
+  <button class="btn" onclick="addCar()">ADD NEW CAR</button>
 
-        <h3>PKR 500</h3>
+</section>
 
-        <a class="btn" href="https://wa.me/923196603839?text=I%20want%20to%20order%20BMW%20M4">Order on WhatsApp</a>
+<footer>
 
-      </div>
+  <p>© 2026 ELITE CPM GARAGE</p>
 
-      <div class="car">
+</footer>
 
-        <img src="https://placehold.co/600x350/151515/ffffff?text=Toyota+Revo" alt="Toyota Revo">
-
-        <h3>Toyota Revo</h3>
-
-        <p>Premium CPM car</p>
-
-        <h3>PKR 400</h3>
-
-        <a class="btn" href="https://wa.me/923196603839?text=I%20want%20to%20order%20Toyota%20Revo">Order on WhatsApp</a>
-
-      </div>
-
-      <div class="car">
-
-        <img src="https://placehold.co/600x350/151515/ffffff?text=BMW+M5" alt="BMW M5">
-
-        <h3>BMW M5</h3>
-
-        <p>Premium CPM car</p>
-
-        <h3>PKR 450</h3>
-
-        <a class="btn" href="https://wa.me/923196603839?text=I%20want%20to%20order%20BMW%20M5">Order on WhatsApp</a>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <section id="contact">
-
-    <h2>CONTACT US</h2>
-
-    <p>Order your favourite CPM car through WhatsApp.</p>
-
-    <a class="btn" href="https://wa.me/923196603839">Chat with us</a>
-
-  </section>
-
-  <footer>
-
-    <p>© 2026 Elite CPM Garage. All rights reserved.</p>
-
-  </footer>
+<script src="app.js"></script>
 
 </body>
 
