@@ -29,27 +29,51 @@ async function loginAdmin() {
 
 // Add a car
 async function addCar() {
-  const name = document.getElementById("carName").value;
+  const name = document.getElementById("carName").value.trim();
   const price = Number(document.getElementById("carPrice").value);
-  const description = document.getElementById("carDescription").value;
-  const image_url = document.getElementById("carImage").value;
+  const description = document.getElementById("carDescription").value.trim();
+  const file = document.getElementById("carImageFile").files[0];
+
+  if (!name || !price || !file) {
+    alert("Enter car name, price and select a photo.");
+    return;
+  }
+
+  const extension = file.name.split(".").pop();
+  const filePath = `${Date.now()}.${extension}`;
+
+  const { error: uploadError } = await db.storage
+    .from("car-images")
+    .upload(filePath, file, {
+      contentType: file.type,
+      upsert: false
+    });
+
+  if (uploadError) {
+    alert("Photo upload failed: " + uploadError.message);
+    return;
+  }
+
+  const { data: imageData } = db.storage
+    .from("car-images")
+    .getPublicUrl(filePath);
 
   const { error } = await db.from("cars").insert([{
     name,
     price,
     description,
-    image_url
+    image_url: imageData.publicUrl,
+    is_active: true
   }]);
 
   if (error) {
-    alert(error.message);
+    alert("Car save failed: " + error.message);
     return;
   }
 
-  alert("Car added successfully!");
+  alert("Car and photo added successfully!");
   loadCars();
 }
-
 // Show cars
 async function loadCars() {
   const { data, error } = await db
