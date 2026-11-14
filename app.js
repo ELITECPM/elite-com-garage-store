@@ -6,6 +6,8 @@ const supabaseClient = supabase.createClient(
   SUPABASE_KEY
 );
 
+let allCars = [];
+
 async function loadCars() {
   const { data, error } = await supabaseClient
     .from("cars")
@@ -18,30 +20,24 @@ async function loadCars() {
     return;
   }
 
-  const sections = {
-    "Trending Cars": document.getElementById("trendingCars"),
-    "New Update Cars": document.getElementById("newUpdateCars"),
-    "CPM2 Cars": document.getElementById("cpm2Cars")
-  };
+  allCars = data;
+  filterCars("All");
+}
 
-  Object.values(sections).forEach(container => {
-    if (container) container.innerHTML = "";
-  });
+function filterCars(category) {
+  const carList = document.getElementById("carList");
+  carList.innerHTML = "";
 
-  data.forEach(car => {
-    const category = car.category || "Trending Cars";
-    const container = sections[category];
+  const filteredCars = category === "All"
+    ? allCars
+    : allCars.filter(car => car.category === category);
 
-    if (!container) return;
-
+  filteredCars.forEach(car => {
     const card = document.createElement("div");
 
     const image = document.createElement("img");
     image.src = car.image_url;
     image.alt = car.name;
-    image.style.width = "100%";
-    image.style.height = "150px";
-    image.style.objectFit = "contain";
 
     const name = document.createElement("h3");
     name.textContent = car.name;
@@ -49,11 +45,9 @@ async function loadCars() {
     const oldPrice = document.createElement("p");
     oldPrice.textContent = "PKR " + car.original_price;
     oldPrice.style.textDecoration = "line-through";
-    oldPrice.style.color = "#999";
 
     const price = document.createElement("h3");
     price.textContent = "PKR " + car.price;
-    price.style.color = "#00ff99";
 
     const description = document.createElement("p");
     description.textContent = car.description || "";
@@ -63,10 +57,9 @@ async function loadCars() {
     button.onclick = () => orderOnWhatsApp(car.name, car.price);
 
     card.append(image, name, oldPrice, price, description, button);
-    container.appendChild(card);
+    carList.appendChild(card);
   });
 }
-
 function orderOnWhatsApp(carName, carPrice) {
   const phone = "923196603839";
 
