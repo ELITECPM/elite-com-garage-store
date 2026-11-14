@@ -165,6 +165,7 @@ function checkoutCart() {
     "_blank"
   );
 }
+
 function chooseOrderMethod() {
   if (cart.length === 0) {
     alert("Your cart is empty!");
@@ -177,7 +178,7 @@ function chooseOrderMethod() {
 
   if (choice) {
     window.open(
-    https://www.tiktok.com/@elitecpmgarage,
+      "https://www.tiktok.com/@elitecpmgarage",
       "_blank"
     );
   } else {
