@@ -186,3 +186,84 @@ function chooseOrderMethod() {
     checkoutCart();
   }
 }
+function populateBattleCars() {
+  const first = document.getElementById("carOne");
+  const second = document.getElementById("carTwo");
+
+  if (!first || !second) return;
+
+  first.innerHTML = '<option value="">Select First Car</option>';
+  second.innerHTML = '<option value="">Select Second Car</option>';
+
+  allCars.forEach(car => {
+    const option1 = document.createElement("option");
+    option1.value = car.id;
+    option1.textContent = car.name;
+
+    const option2 = document.createElement("option");
+    option2.value = car.id;
+    option2.textContent = car.name;
+
+    first.appendChild(option1);
+    second.appendChild(option2);
+  });
+}
+
+function compareCars() {
+  const firstId = document.getElementById("carOne").value;
+  const secondId = document.getElementById("carTwo").value;
+  const result = document.getElementById("comparisonResult");
+
+  if (!firstId || !secondId) {
+    alert("Please select two cars!");
+    return;
+  }
+
+  if (firstId === secondId) {
+    alert("Please select two different cars!");
+    return;
+  }
+
+  const carA = allCars.find(car => String(car.id) === firstId);
+  const carB = allCars.find(car => String(car.id) === secondId);
+
+  if (!carA || !carB) return;
+
+  result.innerHTML = "";
+
+  [carA, carB].forEach(car => {
+    const card = document.createElement("div");
+
+    const image = document.createElement("img");
+    image.src = car.image_url;
+    image.alt = car.name;
+    image.style.width = "100%";
+    image.style.maxWidth = "250px";
+
+    const name = document.createElement("h3");
+    name.textContent = car.name;
+
+    const price = document.createElement("p");
+    price.textContent = "Price: PKR " + car.price;
+
+    const original = document.createElement("p");
+    original.textContent = "Real Price: PKR " + car.original_price;
+
+    const category = document.createElement("p");
+    category.textContent = "Category: " + (car.category || "Not specified");
+
+    const description = document.createElement("p");
+    description.textContent = car.description || "No description";
+
+    card.append(image, name, price, original, category, description);
+    result.appendChild(card);
+  });
+
+  const winner = document.createElement("h3");
+  winner.textContent =
+    Number(carA.price) <= Number(carB.price)
+      ? "🏆 " + carA.name + " has the lower price!"
+      : "🏆 " + carB.name + " has the lower price!";
+
+  result.appendChild(winner);
+}
