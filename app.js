@@ -186,7 +186,7 @@ function chooseOrderMethod() {
     checkoutCart();
   }
 }
-function populateBattleCars() {
+function populateBattleCars()
 console.log("Cars for comparison:", allCars);
   const first = document.getElementById("carOne");
   const second = document.getElementById("carTwo");
