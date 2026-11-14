@@ -28,7 +28,7 @@ function filterCars(category) {
 
 let currentCategory = "All";
 
-function searchCars() {
+function searchCars() 
   const carList = document.getElementById("carList");
   const searchInput = document.getElementById("carSearch");
 
