@@ -41,21 +41,18 @@
     <a href="#cars" class="btn">EXPLORE SHOWROOM</a>
   </section>
 
-<section id="trending">
-  <h2>🔥 TRENDING CARS</h2>
-  <div id="trendingCars"></div>
-</section>
+<section id="showroom">
+  <h2>ELITE CPM GARAGE SHOWROOM</h2>
 
-<section id="newUpdates">
-  <h2>🆕 NEW UPDATE CARS</h2>
-  <div id="newUpdateCars"></div>
-</section>
+  <div class="category-buttons">
+    <button onclick="filterCars('Trending Cars')">🔥 Trending</button>
+    <button onclick="filterCars('New Update Cars')">🆕 New Updates</button>
+    <button onclick="filterCars('CPM2 Cars')">🚘 CPM2</button>
+    <button onclick="filterCars('All')">All Cars</button>
+  </div>
 
-<section id="cpm2">
-  <h2>🚘 CPM2 CARS</h2>
-  <div id="cpm2Cars"></div>
+  <div id="carList"></div>
 </section>
-
   <footer id="contact">
     <h3>ELITE CPM GARAGE</h3>
     <p>Premium CPM Cars • Quality • Style</p>
