@@ -69,13 +69,6 @@ Please send me your account details.`;
     "_blank"
   );
 }
-  const phone = "923196603839";
-  const message = `Hello Elite CPM Garage! I have paid for ${carName}. Price: PKR ${carPrice}. Please verify my payment. I will attach my payment screenshot here.`;
 
-  window.open(
-    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
-    "_blank"
-  );
-}
 
 loadCars();
