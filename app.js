@@ -100,8 +100,11 @@ Please send me your account details.`;
   );
 }
 
-loadCars();
 let cart = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCars();
+});
 
 function addToCart(car) {
   cart.push(car);
