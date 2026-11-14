@@ -1,12 +1,16 @@
 const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
+const SUPABASE_URL = "PASTE_YOUR_EXISTING_SUPABASE_URL";
+const SUPABASE_KEY = "PASTE_YOUR_EXISTING_PUBLISHABLE_KEY";
+
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
 let allCars = [];
+let currentCategory = "All";
 
 async function loadCars() {
   const { data, error } = await supabaseClient
@@ -16,35 +20,38 @@ async function loadCars() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error(error);
+    console.error("Loading cars failed:", error);
     return;
   }
 
-  allCars = data;
+  allCars = data || [];
+  searchCars();
+}
+
 function filterCars(category) {
   currentCategory = category;
   searchCars();
 }
 
-let currentCategory = "All";
-
-function searchCars() 
+function searchCars() {
   const carList = document.getElementById("carList");
   const searchInput = document.getElementById("carSearch");
 
-  if (!carList || !searchInput) return;
+  if (!carList) return;
 
-  const searchText = searchInput.value.toLowerCase().trim();
+  const searchText = searchInput
+    ? searchInput.value.toLowerCase().trim()
+    : "";
 
   carList.innerHTML = "";
 
   const filteredCars = allCars.filter(car => {
     const matchesCategory =
       currentCategory === "All" ||
-      car.category === currentCategory;
+      (car.category || "Trending Cars") === currentCategory;
 
     const matchesSearch =
-      car.name.toLowerCase().includes(searchText);
+      (car.name || "").toLowerCase().includes(searchText);
 
     return matchesCategory && matchesSearch;
   });
@@ -77,6 +84,7 @@ function searchCars()
     carList.appendChild(card);
   });
 }
+
 function orderOnWhatsApp(carName, carPrice) {
   const phone = "923196603839";
 
@@ -92,6 +100,5 @@ Please send me your account details.`;
     "_blank"
   );
 }
-
 
 loadCars();
