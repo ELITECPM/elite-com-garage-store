@@ -46,7 +46,7 @@ price.style.color = "#00ff99";
     description.textContent = car.description || "";
 
     const button = document.createElement("button");
-    button.textContent = "I HAVE PAID";
+    button.textContent = "I WANT TO PAY";
     button.onclick = () => orderOnWhatsApp(car.name, car.price);
 
   card.append(image, name, oldPrice, price, description, button);
