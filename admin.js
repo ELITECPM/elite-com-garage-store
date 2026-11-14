@@ -31,11 +31,17 @@ async function loginAdmin() {
 async function addCar() {
   const name = document.getElementById("carName").value.trim();
   const price = Number(document.getElementById("carPrice").value);
+  const originalPrice = Number(document.getElementById("originalPrice").value);
   const description = document.getElementById("carDescription").value.trim();
   const file = document.getElementById("carImageFile").files[0];
 
-  if (!name || !price || !file) {
-    alert("Enter car name, price and select a photo.");
+  if (!name || !price || !originalPrice || !file) {
+    alert("Enter car name, both prices and select a photo.");
+    return;
+  }
+
+  if (originalPrice < price) {
+    alert("Real price must be greater than or equal to discounted price.");
     return;
   }
 
@@ -61,6 +67,7 @@ async function addCar() {
   const { error } = await db.from("cars").insert([{
     name,
     price,
+    original_price: originalPrice,
     description,
     image_url: imageData.publicUrl,
     is_active: true
@@ -71,7 +78,7 @@ async function addCar() {
     return;
   }
 
-  alert("Car and photo added successfully!");
+  alert("Car and both prices added successfully!");
   loadCars();
 }
 // Show cars
