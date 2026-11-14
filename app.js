@@ -56,6 +56,20 @@ price.style.color = "#00ff99";
 
 function orderOnWhatsApp(carName, carPrice) {
   const phone = "923196603839";
+
+  const message = `Hello Elite CPM Garage!
+
+I want to pay for this car: ${carName}
+Price: PKR ${carPrice}
+
+Please send me your account details.`;
+
+  window.open(
+    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
+}
+  const phone = "923196603839";
   const message = `Hello Elite CPM Garage! I have paid for ${carName}. Price: PKR ${carPrice}. Please verify my payment. I will attach my payment screenshot here.`;
 
   window.open(
