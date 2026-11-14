@@ -391,3 +391,29 @@ footer {
     height: 180px;
   }
 }
+.search-box {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 0 12px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 15px;
+  background: #080b16;
+  color: white;
+  border: 2px solid #00d9ff;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
+}
+
+.search-box input::placeholder {
+  color: #aaa;
+}
