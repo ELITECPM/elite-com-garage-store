@@ -33,6 +33,7 @@ async function addCar() {
   const price = Number(document.getElementById("carPrice").value);
   const originalPrice = Number(document.getElementById("originalPrice").value);
   const description = document.getElementById("carDescription").value.trim();
+  const category = document.getElementById("carCategory").value;
   const file = document.getElementById("carImageFile").files[0];
 
   if (!name || !price || !originalPrice || !file) {
@@ -64,14 +65,15 @@ async function addCar() {
     .from("car-images")
     .getPublicUrl(filePath);
 
-  const { error } = await db.from("cars").insert([{
+const { error } = await db.from("cars").insert([{
     name,
     price,
     original_price: originalPrice,
     description,
+    category,
     image_url: imageData.publicUrl,
     is_active: true
-  }]);
+}]);
 
   if (error) {
     alert("Car save failed: " + error.message);
