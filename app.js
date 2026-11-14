@@ -177,7 +177,7 @@ function chooseOrderMethod() {
 
   if (choice) {
     window.open(
-    https://www.tiktok.com/@elitecpmgarage ,
+    https://www.tiktok.com/@elitecpmgarage,
       "_blank"
     );
   } else {
