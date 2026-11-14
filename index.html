@@ -50,7 +50,14 @@
     <button onclick="filterCars('CPM2 Cars')">🚘 CPM2</button>
     <button onclick="filterCars('All')">All Cars</button>
   </div>
-
+<div class="search-box">
+  <input
+    type="text"
+    id="carSearch"
+    placeholder="🔍 Search your favourite car..."
+    oninput="searchCars()"
+  >
+</div>
   <div id="carList"></div>
 </section>
   <footer id="contact">
