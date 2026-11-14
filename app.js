@@ -21,16 +21,33 @@ async function loadCars() {
   }
 
   allCars = data;
-  filterCars("All");
+function filterCars(category) {
+  currentCategory = category;
+  searchCars();
 }
 
-function filterCars(category) {
+let currentCategory = "All";
+
+function searchCars() {
   const carList = document.getElementById("carList");
+  const searchInput = document.getElementById("carSearch");
+
+  if (!carList || !searchInput) return;
+
+  const searchText = searchInput.value.toLowerCase().trim();
+
   carList.innerHTML = "";
 
-  const filteredCars = category === "All"
-    ? allCars
-    : allCars.filter(car => car.category === category);
+  const filteredCars = allCars.filter(car => {
+    const matchesCategory =
+      currentCategory === "All" ||
+      car.category === currentCategory;
+
+    const matchesSearch =
+      car.name.toLowerCase().includes(searchText);
+
+    return matchesCategory && matchesSearch;
+  });
 
   filteredCars.forEach(car => {
     const card = document.createElement("div");
