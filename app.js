@@ -77,8 +77,7 @@ function searchCars() {
     const button = document.createElement("button");
    button.textContent = "ADD TO CART";
 button.onclick = () => addToCart(car);
-    button.onclick = () => orderOnWhatsApp(car.name, car.price);
-
+    
     card.append(image, name, oldPrice, price, description, button);
     carList.appendChild(card);
   });
