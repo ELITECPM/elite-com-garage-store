@@ -292,3 +292,45 @@ footer {
     font-size: 12px;
   }
 }
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.category-buttons button {
+  background: #080b16;
+  color: #00d9ff;
+  border: 1px solid #00d9ff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.category-buttons button:hover {
+  background: #00d9ff;
+  color: black;
+}
+
+#carList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+#carList > div {
+  background: #101525;
+  border: 1px solid #00d9ff;
+  border-radius: 14px;
+  padding: 15px;
+  text-align: center;
+}
+
+#carList img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+}
