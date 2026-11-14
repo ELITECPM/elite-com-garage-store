@@ -22,8 +22,9 @@ async function loadCars() {
     return;
   }
 
-  allCars = data || [];
-  searchCars();
+allCars = data || [];
+searchCars();
+populateBattleCars();
 }
 
 function filterCars(category) {
