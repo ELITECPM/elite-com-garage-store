@@ -75,7 +75,8 @@ function searchCars() {
     description.textContent = car.description || "";
 
     const button = document.createElement("button");
-    button.textContent = "I WANT TO PAY";
+   button.textContent = "ADD TO CART";
+button.onclick = () => addToCart(car);
     button.onclick = () => orderOnWhatsApp(car.name, car.price);
 
     card.append(image, name, oldPrice, price, description, button);
@@ -100,3 +101,68 @@ Please send me your account details.`;
 }
 
 loadCars();
+let cart = [];
+
+function addToCart(car) {
+  cart.push(car);
+  updateCart();
+  alert("Car added to cart!");
+}
+
+function showCart() {
+  const box = document.getElementById("cartBox");
+  box.style.display =
+    box.style.display === "none" ? "block" : "none";
+  updateCart();
+}
+
+function updateCart() {
+  document.getElementById("cartCount").textContent = cart.length;
+
+  const items = document.getElementById("cartItems");
+  const total = cart.reduce((sum, car) => sum + Number(car.price), 0);
+
+  items.innerHTML = "";
+
+  cart.forEach((car, index) => {
+    const item = document.createElement("p");
+    item.textContent = car.name + " - PKR " + car.price;
+
+    const remove = document.createElement("button");
+    remove.textContent = "Remove";
+    remove.onclick = () => {
+      cart.splice(index, 1);
+      updateCart();
+    };
+
+    item.appendChild(remove);
+    items.appendChild(item);
+  });
+
+  document.getElementById("cartTotal").textContent = total;
+}
+
+function checkoutCart() {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const order = cart.map(car =>
+    car.name + " - PKR " + car.price
+  ).join("\n");
+
+  const total = cart.reduce(
+    (sum, car) => sum + Number(car.price), 0
+  );
+
+  const message =
+    "Hello Elite CPM Garage!\n\nMy order:\n" +
+    order + "\n\nTotal: PKR " + total;
+
+  window.open(
+    "https://wa.me/923196603839?text=" +
+    encodeURIComponent(message),
+    "_blank"
+  );
+}
