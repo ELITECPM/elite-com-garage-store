@@ -165,3 +165,22 @@ function checkoutCart() {
     "_blank"
   );
 }
+function chooseOrderMethod() {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const choice = confirm(
+    "Order through TikTok?\n\nOK = TikTok\nCancel = WhatsApp"
+  );
+
+  if (choice) {
+    window.open(
+    https://www.tiktok.com/@elitecpmgarage ,
+      "_blank"
+    );
+  } else {
+    checkoutCart();
+  }
+}
