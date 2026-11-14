@@ -58,6 +58,18 @@
     oninput="searchCars()"
   >
 </div>
+ <div class="cart-section">
+  <button onclick="showCart()">
+    🛒 MY CART (<span id="cartCount">0</span>)
+  </button>
+</div>
+
+<div id="cartBox" style="display:none;">
+  <h2>MY SHOPPING CART</h2>
+  <div id="cartItems"></div>
+  <h3>Total: PKR <span id="cartTotal">0</span></h3>
+  <button onclick="checkoutCart()">ORDER ON WHATSAPP</button>
+</div>
   <div id="carList"></div>
 </section>
   <footer id="contact">
