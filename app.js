@@ -34,9 +34,14 @@ async function loadCars() {
     const name = document.createElement("h3");
     name.textContent = car.name;
 
-    const price = document.createElement("p");
-    price.textContent = "PKR " + car.price;
+   const oldPrice = document.createElement("p");
+oldPrice.textContent = "PKR " + car.original_price;
+oldPrice.style.textDecoration = "line-through";
+oldPrice.style.color = "#999";
 
+const price = document.createElement("h3");
+price.textContent = "PKR " + car.price;
+price.style.color = "#00ff99";
     const description = document.createElement("p");
     description.textContent = car.description || "";
 
@@ -44,7 +49,7 @@ async function loadCars() {
     button.textContent = "I HAVE PAID";
     button.onclick = () => orderOnWhatsApp(car.name, car.price);
 
-    card.append(image, name, price, description, button);
+  card.append(image, name, oldPrice, price, description, button);
     container.appendChild(card);
   });
 }
