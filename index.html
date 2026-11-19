@@ -5,101 +5,100 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Elite CPM Garage | Premium Car Store</title>
+  <title> ELITE CPM GARAGE | Premium Car Store</title>
 
   <meta name="theme-color" content="#05050a">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 
 <body>
 
-  <header>
-    <img
-      src="elite-logo.png"
-      alt="Elite CPM Garage Logo"
-      class="logo"
-    >
+  <!-- HEADER -->
+  <header class="site-header">
 
     <div class="brand">
-      <h1>ELITE CPM GARAGE</h1>
-      <p>PREMIUM CPM CAR STORE</p>
+
+      <img
+        src="elite-logo.png"
+        alt="elite cpm Logo"
+        class="logo"
+      >
+
+      <div class="brand-text">
+        <h1>ELITE CPM GARAGE</h1>
+        <p>PREMIUM CPM CAR STORE</p>
+      </div>
+
     </div>
+
   </header>
 
+  <!-- NAVIGATION -->
   <nav>
     <a href="#home">Home</a>
-    <a href="#cars">Showroom</a>
+    <a href="#showroom">Showroom</a>
     <a href="#contact">Contact</a>
   </nav>
 
+  <!-- HERO -->
   <section class="hero" id="home">
-    <h2>WELCOME TO ELITE CPM GARAGE</h2>
-
+    <h2>WELCOME TO ELITE CPM GARAGE STORE</h2>
     <p>Discover Your Dream CPM Cars</p>
-
-    <a href="#cars" class="btn">EXPLORE SHOWROOM</a>
+    <a href="#showroom" class="btn">EXPLORE SHOWROOM</a>
   </section>
 
-<section id="showroom">
-  <h2>ELITE CPM GARAGE SHOWROOM</h2>
+  <!-- SHOWROOM -->
+  <section id="showroom">
 
-  <div class="category-buttons">
-    <button onclick="filterCars('Trending Cars')">🔥 Trending</button>
-    <button onclick="filterCars('New Update Cars')">🆕 New Updates</button>
-    <button onclick="filterCars('CPM2 Cars')">🚘 CPM2</button>
-    <button onclick="filterCars('All')">All Cars</button>
-  </div>
-<div class="search-box">
-  <input
-    type="text"
-    id="carSearch"
-    placeholder="🔍 Search your favourite car..."
-    oninput="searchCars()"
-  >
-</div>
- <div class="cart-section">
-  <button onclick="showCart()">
-    🛒 MY CART (<span id="cartCount">0</span>)
-  </button>
-</div>
+    <h2>ELITE CPM GARAGE SHOWROOM</h2>
 
-<div id="cartBox" style="display:none;">
-  <h2>MY SHOPPING CART</h2>
-  <div id="cartItems"></div>
-  <h3>Total: PKR <span id="cartTotal">0</span></h3>
-  <button onclick="chooseOrderMethod()">I WANT TO ORDER</button>
-</div>
-  <section id="carBattle">
-  <h2>⚔️ ELITE CAR BATTLE</h2>
-  <p>Choose two cars and compare them!</p>
+    <div class="category-buttons">
+      <button onclick="filterCars('Trending Cars')">🔥 Trending</button>
+      <button onclick="filterCars('New Update Cars')">🆕 New Updates</button>
+      <button onclick="filterCars('CPM2 Cars')">🚘 CPM2</button>
+      <button onclick="filterCars('All')">All Cars</button>
+    </div>
 
-  <div class="compare-selectors">
-    <select id="carOne">
-      <option value="">Select First Car</option>
-    </select>
+    <!-- SEARCH -->
+    <div class="search-box">
+      <input
+        type="text"
+        id="carSearch"
+        placeholder="🔍 Search your favourite car..."
+        oninput="searchCars()"
+      >
+    </div>
 
-    <select id="carTwo">
-      <option value="">Select Second Car</option>
-    </select>
-  </div>
+    <!-- CART -->
+    <div class="cart-section">
+      <button onclick="showCart()">
+        🛒 MY CART (<span id="cartCount">0</span>)
+      </button>
+    </div>
 
-  <button onclick="compareCars()">
-    COMPARE CARS
-  </button>
+    <div id="cartBox" style="display:none;">
+      <h2>MY SHOPPING CART</h2>
+      <div id="cartItems"></div>
+      <h3>Total: PKR <span id="cartTotal">0</span></h3>
+      <button onclick="chooseOrderMethod()">I WANT TO ORDER</button>
+    </div>
 
-  <div id="comparisonResult"></div>
-</section>
-  <div id="carList"></div>
-</section>
+    <!-- CAR LIST -->
+    <div id="carList"></div>
+
+  </section>
+
+  <!-- FOOTER -->
   <footer id="contact">
     <h3>ELITE CPM GARAGE</h3>
     <p>Premium CPM Cars • Quality • Style</p>
-    <p>© 2026 Elite CPM Garage. All rights reserved.</p>
+    <p>© 2026 ELITECPMGARGE. All rights reserved.</p>
   </footer>
 
+  <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=12"></script>
+  <script src="app.js?v=13"></script>
 
 </body>
 </html>
