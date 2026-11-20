@@ -2,14 +2,16 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title> ELITE CPM GARAGE | Premium Car Store</title>
+  <title>ELITE CPM GARAGE | Premium Car Store</title>
 
   <meta name="theme-color" content="#05050a">
 
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=15">
+
 </head>
 
 <body>
@@ -26,79 +28,180 @@
       >
 
       <div class="brand-text">
+
         <h1>ELITE CPM GARAGE</h1>
+
         <p>PREMIUM CPM CAR STORE</p>
+
       </div>
 
     </div>
 
   </header>
 
+
   <!-- NAVIGATION -->
   <nav>
+
     <a href="#home">Home</a>
+
     <a href="#showroom">Showroom</a>
+
+    <a href="#accounts">Accounts</a>
+
     <a href="#contact">Contact</a>
+
   </nav>
+
 
   <!-- HERO -->
   <section class="hero" id="home">
+
     <h2>WELCOME TO ELITE CPM GARAGE STORE</h2>
+
     <p>Discover Your Dream CPM Cars</p>
-    <a href="#showroom" class="btn">EXPLORE SHOWROOM</a>
+
+    <a href="#showroom" class="btn">
+      EXPLORE SHOWROOM
+    </a>
+
   </section>
 
-  <!-- SHOWROOM -->
+
+  <!-- CAR SHOWROOM -->
   <section id="showroom">
 
     <h2>ELITE CPM GARAGE SHOWROOM</h2>
 
+
+    <!-- CAR CATEGORIES -->
     <div class="category-buttons">
-      <button onclick="filterCars('Trending Cars')">🔥 Trending</button>
-      <button onclick="filterCars('New Update Cars')">🆕 New Updates</button>
-      <button onclick="filterCars('CPM2 Cars')">🚘 CPM2</button>
-      <button onclick="filterCars('All')">All Cars</button>
+
+      <button onclick="filterCars('Trending Cars')">
+        🔥 Trending
+      </button>
+
+      <button onclick="filterCars('New Update Cars')">
+        🆕 New Updates
+      </button>
+
+      <button onclick="filterCars('CPM2 Cars')">
+        🚘 CPM2
+      </button>
+
+      <button onclick="filterCars('All')">
+        All Cars
+      </button>
+
     </div>
 
-    <!-- SEARCH -->
+
+    <!-- CAR SEARCH -->
     <div class="search-box">
+
       <input
         type="text"
         id="carSearch"
         placeholder="🔍 Search your favourite car..."
         oninput="searchCars()"
       >
+
     </div>
+
 
     <!-- CART -->
     <div class="cart-section">
+
       <button onclick="showCart()">
+
         🛒 MY CART (<span id="cartCount">0</span>)
+
       </button>
+
     </div>
 
+
     <div id="cartBox" style="display:none;">
+
       <h2>MY SHOPPING CART</h2>
+
       <div id="cartItems"></div>
-      <h3>Total: PKR <span id="cartTotal">0</span></h3>
-      <button onclick="chooseOrderMethod()">I WANT TO ORDER</button>
+
+      <h3>
+        Total: PKR <span id="cartTotal">0</span>
+      </h3>
+
+      <button onclick="chooseOrderMethod()">
+        I WANT TO ORDER
+      </button>
+
     </div>
+
 
     <!-- CAR LIST -->
     <div id="carList"></div>
 
   </section>
 
+
+
+  <!-- CPM ACCOUNTS CATALOGUE -->
+  <section id="accounts">
+
+    <h2>ELITE CPM GARAGE ACCOUNTS</h2>
+
+    <p>
+      EXPLORE OUR PREMIUM CPM ACCOUNTS
+    </p>
+
+
+    <!-- ACCOUNT SEARCH -->
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="accountSearch"
+        placeholder="🔍 Search CPM accounts..."
+        oninput="searchAccounts()"
+      >
+
+    </div>
+
+
+    <!-- ACCOUNT CATALOGUE -->
+    <div id="accountList">
+
+      <p>Loading CPM accounts...</p>
+
+    </div>
+
+  </section>
+
+
+
   <!-- FOOTER -->
   <footer id="contact">
+
     <h3>ELITE CPM GARAGE</h3>
+
     <p>Premium CPM Cars • Quality • Style</p>
-    <p>© 2026 ELITECPMGARGE. All rights reserved.</p>
+
+    <p>CPM Accounts • Premium Collection</p>
+
+    <p>©️ 2026 ELITECPMGARGE. All rights reserved.</p>
+
   </footer>
 
-  <!-- SCRIPTS -->
+
+
+  <!-- SUPABASE SCRIPT -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=14"></script>
+
+
+  <!-- MAIN JAVASCRIPT -->
+  <script src="app.js?v=15"></script>
+
 
 </body>
+
 </html>
