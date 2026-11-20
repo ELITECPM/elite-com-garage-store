@@ -472,3 +472,41 @@ footer {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .site-header {
+    padding: 10px 14px;
+  }
+
+  .site-header .brand {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .site-header .logo {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    flex: 0 0 40px !important;
+  }
+
+  .site-header .brand-text h1 {
+    font-size: 20px;
+  }
+
+  .site-header .brand-text p {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  nav {
+    gap: 15px;
+    padding: 14px 8px;
+    font-size: 12px;
+  }
