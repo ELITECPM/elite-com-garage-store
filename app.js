@@ -175,17 +175,69 @@ function chooseOrderMethod() {
     return;
   }
 
-  const choice = confirm(
-    "Order through TikTok?\n\nOK = TikTok\nCancel = WhatsApp"
-  );
+  const popup = document.createElement("div");
 
-  if (choice) {
+  popup.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+  `;
+
+  popup.innerHTML = `
+    <div style="
+      background: #191919;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      width: 85%;
+      max-width: 350px;
+      border: 1px solid #e5b83f;
+    ">
+      <h2 style="color:#ffd76a; margin-bottom:20px;">
+        Choose Order Method
+      </h2>
+
+      <button id="zbWhatsApp" style="
+        display:block;
+        width:100%;
+        padding:14px;
+        margin-bottom:12px;
+        background:#25D366;
+        color:white;
+        border:0;
+        border-radius:8px;
+        font-weight:bold;
+      ">WhatsApp</button>
+
+      <button id="zbTikTok" style="
+        display:block;
+        width:100%;
+        padding:14px;
+        background:#333;
+        color:white;
+        border:0;
+        border-radius:8px;
+        font-weight:bold;
+      ">TikTok</button>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  popup.querySelector("#zbWhatsApp").onclick = function() {
+    popup.remove();
+    checkoutCart();
+  };
+
+  popup.querySelector("#zbTikTok").onclick = function() {
+    popup.remove();
     window.open(
       "https://www.tiktok.com/@elitecpmgarage",
       "_blank"
     );
-  } else {
-    checkoutCart();
-  }
+  };
 }
-
