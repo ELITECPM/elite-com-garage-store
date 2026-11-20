@@ -97,6 +97,7 @@ nav a:hover {
   color: var(--gold);
 }
 
+
 /* HERO */
 
 .hero {
@@ -108,8 +109,8 @@ nav a:hover {
   align-items: center;
   text-align: center;
   background:
-    radial-gradient(ellipse at center, #d6a62a18, transparent 65%),
-    linear-gradient(135deg, #17130a, #090909 65%);
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.60)),
+    url("./mercedes.jpg") center center / cover no-repeat;
   border-bottom: 1px solid var(--border);
 }
 
