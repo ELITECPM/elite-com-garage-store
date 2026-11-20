@@ -7,6 +7,11 @@ const supabaseClient = supabase.createClient(
   SUPABASE_KEY
 );
 
+
+// =====================================
+// CARS SYSTEM
+// =====================================
+
 let allCars = [];
 let currentCategory = "All";
 
@@ -22,8 +27,8 @@ async function loadCars() {
     return;
   }
 
-allCars = data || [];
-searchCars();
+  allCars = data || [];
+  searchCars();
 }
 
 function filterCars(category) {
@@ -54,6 +59,11 @@ function searchCars() {
     return matchesCategory && matchesSearch;
   });
 
+  if (filteredCars.length === 0) {
+    carList.textContent = "No cars found.";
+    return;
+  }
+
   filteredCars.forEach(car => {
     const card = document.createElement("div");
 
@@ -75,13 +85,170 @@ function searchCars() {
     description.textContent = car.description || "";
 
     const button = document.createElement("button");
-   button.textContent = "ADD TO CART";
-button.onclick = () => addToCart(car);
-    
-    card.append(image, name, oldPrice, price, description, button);
+    button.textContent = "ADD TO CART";
+    button.onclick = () => addToCart(car);
+
+    card.append(
+      image,
+      name,
+      oldPrice,
+      price,
+      description,
+      button
+    );
+
     carList.appendChild(card);
   });
 }
+
+
+// =====================================
+// CPM ACCOUNTS SYSTEM
+// =====================================
+
+let allAccounts = [];
+
+async function loadAccounts() {
+  const accountList = document.getElementById("accountList");
+
+  if (!accountList) return;
+
+  accountList.textContent = "Loading CPM accounts...";
+
+  const { data, error } = await supabaseClient
+    .from("accounts")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Loading accounts failed:", error);
+
+    accountList.textContent =
+      "Unable to load accounts. Please try again later.";
+
+    return;
+  }
+
+  allAccounts = data || [];
+
+  searchAccounts();
+}
+
+
+function searchAccounts() {
+  const accountList = document.getElementById("accountList");
+  const searchInput = document.getElementById("accountSearch");
+
+  if (!accountList) return;
+
+  const searchText = searchInput
+    ? searchInput.value.toLowerCase().trim()
+    : "";
+
+  accountList.innerHTML = "";
+
+  const filteredAccounts = allAccounts.filter(account => {
+    const name = (account.name || "").toLowerCase();
+    const description = (account.description || "").toLowerCase();
+
+    return (
+      name.includes(searchText) ||
+      description.includes(searchText)
+    );
+  });
+
+  if (filteredAccounts.length === 0) {
+    accountList.textContent = "No CPM accounts available.";
+    return;
+  }
+
+  filteredAccounts.forEach(account => {
+    const card = document.createElement("div");
+    card.className = "account-card";
+
+    // ACCOUNT NAME
+    const name = document.createElement("h3");
+    name.textContent = account.name || "CPM Account";
+
+    // ACCOUNT PRICE
+    const price = document.createElement("h3");
+    price.textContent = "PKR " + account.price;
+
+    // ACCOUNT DESCRIPTION
+    const description = document.createElement("p");
+    description.textContent = account.description || "";
+
+    // ACCOUNT VIDEO
+    const video = document.createElement("video");
+
+    video.className = "account-video";
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+
+    if (account.video_url) {
+      video.src = account.video_url;
+    } else {
+      video.hidden = true;
+
+      const noVideo = document.createElement("p");
+      noVideo.textContent = "Video not available.";
+      card.appendChild(noVideo);
+    }
+
+    // ORDER ACCOUNT BUTTON
+    const orderButton = document.createElement("button");
+
+    orderButton.textContent = "ORDER ACCOUNT";
+
+    orderButton.onclick = () => {
+      orderAccountOnWhatsApp(account.name, account.price);
+    };
+
+    // ADD ELEMENTS TO ACCOUNT CARD
+    card.append(
+      name,
+      price,
+      description
+    );
+
+    if (account.video_url) {
+      card.appendChild(video);
+    }
+
+    card.appendChild(orderButton);
+
+    accountList.appendChild(card);
+  });
+}
+
+
+// =====================================
+// ACCOUNT WHATSAPP ORDER
+// =====================================
+
+function orderAccountOnWhatsApp(accountName, accountPrice) {
+  const phone = "923196603839";
+
+  const message =
+    "Hello ELITE CPM GARAGE!\n\n" +
+    "I want to order this CPM account:\n" +
+    "Account: " + accountName + "\n" +
+    "Price: PKR " + accountPrice + "\n\n" +
+    "Please send me the payment details.";
+
+  window.open(
+    "https://wa.me/" + phone +
+    "?text=" + encodeURIComponent(message),
+    "_blank"
+  );
+}
+
+
+// =====================================
+// CAR WHATSAPP ORDER
+// =====================================
 
 function orderOnWhatsApp(carName, carPrice) {
   const phone = "923196603839";
@@ -99,11 +266,12 @@ Please send me your account details.`;
   );
 }
 
-let cart = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadCars();
-});
+// =====================================
+// SHOPPING CART
+// =====================================
+
+let cart = [];
 
 function addToCart(car) {
   cart.push(car);
@@ -113,8 +281,10 @@ function addToCart(car) {
 
 function showCart() {
   const box = document.getElementById("cartBox");
+
   box.style.display =
     box.style.display === "none" ? "block" : "none";
+
   updateCart();
 }
 
@@ -122,16 +292,23 @@ function updateCart() {
   document.getElementById("cartCount").textContent = cart.length;
 
   const items = document.getElementById("cartItems");
-  const total = cart.reduce((sum, car) => sum + Number(car.price), 0);
+
+  const total = cart.reduce(
+    (sum, car) => sum + Number(car.price),
+    0
+  );
 
   items.innerHTML = "";
 
   cart.forEach((car, index) => {
     const item = document.createElement("p");
+
     item.textContent = car.name + " - PKR " + car.price;
 
     const remove = document.createElement("button");
+
     remove.textContent = "Remove";
+
     remove.onclick = () => {
       cart.splice(index, 1);
       updateCart();
@@ -144,6 +321,11 @@ function updateCart() {
   document.getElementById("cartTotal").textContent = total;
 }
 
+
+// =====================================
+// CHECKOUT
+// =====================================
+
 function checkoutCart() {
   if (cart.length === 0) {
     alert("Your cart is empty!");
@@ -155,7 +337,8 @@ function checkoutCart() {
   ).join("\n");
 
   const total = cart.reduce(
-    (sum, car) => sum + Number(car.price), 0
+    (sum, car) => sum + Number(car.price),
+    0
   );
 
   const message =
@@ -168,6 +351,11 @@ function checkoutCart() {
     "_blank"
   );
 }
+
+
+// =====================================
+// CHOOSE ORDER METHOD
+// =====================================
 
 function chooseOrderMethod() {
   if (cart.length === 0) {
@@ -197,6 +385,7 @@ function chooseOrderMethod() {
       max-width: 350px;
       border: 1px solid #e5b83f;
     ">
+
       <h2 style="color:#ffd76a; margin-bottom:20px;">
         Choose Order Method
       </h2>
@@ -223,6 +412,7 @@ function chooseOrderMethod() {
         border-radius:8px;
         font-weight:bold;
       ">TikTok</button>
+
     </div>
   `;
 
@@ -233,11 +423,22 @@ function chooseOrderMethod() {
     checkoutCart();
   };
 
-  popup.querySelector("#zbTikTok").onclick = function() {
+  popup.querySelector("#eliteTikTok").onclick = function() {
     popup.remove();
+
     window.open(
       "https://www.tiktok.com/@elitecpmgarage",
       "_blank"
     );
   };
 }
+
+
+// =====================================
+// WEBSITE STARTUP
+// =====================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCars();
+  loadAccounts();
+});
