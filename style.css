@@ -459,3 +459,58 @@ footer {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+  /* MOBILE HERO IMAGE FIX */
+
+ .hero {
+  min-height: 0;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  padding: 20px 12px;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.50)),
+    url("./mercedes.jpg");
+  background-size: 100% 100%, contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+  .hero h2 {
+    font-size: 30px;
+  }
+
+  section {
+    padding: 38px 14px;
+  }
+
+  .stats,
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #carList,
+  .car-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #carList img,
+  .car img {
+    height: 115px;
+  }
+
+  #carList h3,
+  .car h3 {
+    font-size: 14px;
+  }
+
+  .steps,
+  .steps-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) {
+  #carList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
