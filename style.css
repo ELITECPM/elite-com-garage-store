@@ -44,8 +44,6 @@ header,
   gap: 10px;
 }
 
-/* FIXED LOGO SIZE */
-
 .site-header .logo {
   display: block;
   width: 40px !important;
@@ -96,7 +94,6 @@ nav a {
 nav a:hover {
   color: var(--gold);
 }
-
 
 /* HERO */
 
@@ -151,7 +148,7 @@ button:hover,
 .hero a:hover {
   background: var(--gold-light);
   transform: translateY(-2px);
-  box-shadow: 0 5px 22px #e5b83f35;
+  box-shadow: 0 5px 22px #2589ff35;
 }
 
 /* SECTIONS */
@@ -239,7 +236,7 @@ select:focus {
 .category-buttons button {
   background: #191919;
   color: var(--gold);
-  border: 1px solid #59451d;
+  border: 1px solid #1c3d65;
 }
 
 .category-buttons button:hover {
@@ -276,7 +273,7 @@ select:focus {
 .car:hover {
   transform: translateY(-5px);
   border-color: var(--gold);
-  box-shadow: 0 8px 28px #d6a62a20;
+  box-shadow: 0 8px 28px #2589ff20;
 }
 
 #carList img,
@@ -382,6 +379,7 @@ footer {
 /* MOBILE */
 
 @media (max-width: 768px) {
+
   .site-header {
     padding: 10px 14px;
   }
@@ -392,7 +390,6 @@ footer {
     gap: 10px;
   }
 
-  /* SAME LOGO SIZE ON MOBILE */
   .site-header .logo {
     width: 40px !important;
     height: 40px !important;
@@ -418,61 +415,20 @@ footer {
     font-size: 12px;
   }
 
+  /* MOBILE HERO IMAGE */
+
   .hero {
-    min-height: 300px;
-    padding: 55px 15px;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    padding: 20px 12px;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.50)),
+      url("./mercedes.jpg");
+    background-size: 100% 100%, 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
-
-  section {
-    padding: 38px 14px;
-  }
-
-  .stats,
-  .stats-section {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  #carList,
-  .car-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  #carList img,
-  .car img {
-    height: 115px;
-  }
-
-  #carList h3,
-  .car h3 {
-    font-size: 14px;
-  }
-
-  .steps,
-  .steps-section {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (min-width: 769px) {
-  #carList {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-  /* MOBILE HERO IMAGE FIX */
-
- .hero {
-  min-height: 0;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  padding: 20px 12px;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.50)),
-    url("./mercedes.jpg");
-  background-size: 100% 100%, contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
   .hero h2 {
     font-size: 30px;
@@ -508,6 +464,8 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* DESKTOP */
 
 @media (min-width: 769px) {
   #carList {
