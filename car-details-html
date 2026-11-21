@@ -1,1 +1,287 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Details | Elite CPM Garage</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #090b12;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .back {
+      color: #65b5ff;
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .gallery {
+      background: #151d2b;
+      border-radius: 15px;
+      padding: 12px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 350px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .thumbs img {
+      width: 85px;
+      height: 65px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .thumbs img.active {
+      border-color: #65b5ff;
+    }
+
+    .details {
+      background: #151d2b;
+      padding: 22px;
+      border-radius: 15px;
+      margin-top: 18px;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+    }
+
+    .description {
+      color: #a5b2c5;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .old-price {
+      color: #999;
+      text-decoration: line-through;
+      margin-right: 10px;
+    }
+
+    .new-price {
+      color: #65b5ff;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .cart {
+      background: #2589ff;
+      color: white;
+    }
+
+    .buy {
+      background: #fff;
+      color: #090b12;
+    }
+
+    @media(max-width: 600px) {
+      .main-image {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <a href="index.html" class="back">← Back to Showroom</a>
+
+  <div id="content">Loading car details...</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config.js"></script>
+
+<script>
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentCar = null;
+let photos = [];
+let currentPhoto = 0;
+
+async function loadCar() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+
+  if (!id) {
+    document.getElementById("content").textContent = "Car not found.";
+    return;
+  }
+
+  const { data, error } = await db
+    .from("cars")
+    .select("*")
+    .eq("id", id)
+    .eq("is_active", true)
+    .single();
+
+  if (error || !data) {
+    document.getElementById("content").textContent = "Car not found.";
+    return;
+  }
+
+  currentCar = data;
+
+  photos = [data.image_url, data.second_image_url].filter(Boolean);
+
+  renderCar();
+}
+
+function renderCar() {
+  const car = currentCar;
+
+  document.getElementById("content").innerHTML = `
+    <div class="gallery">
+      <img id="mainImage" class="main-image" src="${photos[0]}" alt="Car photo">
+
+      <div class="controls">
+        <button onclick="changePhoto(-1)">❮ Previous</button>
+        <button onclick="changePhoto(1)">Next ❯</button>
+      </div>
+
+      <div class="thumbs">
+        ${photos.map((photo, index) => `
+          <img src="${photo}" class="${index === 0 ? "active" : ""}"
+            onclick="selectPhoto(${index})" alt="Car thumbnail">
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="details">
+      <h1>${escapeHTML(car.name)}</h1>
+
+      <p class="description">
+        ${escapeHTML(car.description || "No description available.")}
+      </p>
+
+      <span class="old-price">PKR ${Number(car.original_price).toLocaleString()}</span>
+      <span class="new-price">PKR ${Number(car.price).toLocaleString()}</span>
+
+      <div class="actions">
+        <button class="cart" onclick="addCarToCart()">ADD TO CART</button>
+        <button class="buy" onclick="buyNow()">BUY NOW</button>
+      </div>
+    </div>
+  `;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function changePhoto(direction) {
+  currentPhoto = (currentPhoto + direction + photos.length) % photos.length;
+  selectPhoto(currentPhoto);
+}
+
+function selectPhoto(index) {
+  currentPhoto = index;
+
+  document.getElementById("mainImage").src = photos[index];
+
+  document.querySelectorAll(".thumbs img").forEach((img, i) => {
+    img.classList.toggle("active", i === index);
+  });
+}
+
+function addCarToCart() {
+  const cart = JSON.parse(localStorage.getItem("eliteCart") || "[]");
+
+  const existing = cart.find(item => String(item.id) === String(currentCar.id));
+
+  if (existing) {
+    existing.quantity = (existing.quantity || 1) + 1;
+  } else {
+    cart.push({
+      id: currentCar.id,
+      name: currentCar.name,
+      price: currentCar.price,
+      image_url: currentCar.image_url,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem("eliteCart", JSON.stringify(cart));
+
+  alert("Car added to cart!");
+}
+
+function buyNow() {
+  const phone = "923196603839";
+
+  const message = `Hello! I want to buy:
+${currentCar.name}
+Price: PKR ${currentCar.price}`;
+
+  window.open(
+    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
+}
+
+loadCar();
+</script>
+
+</body>
+</html>
+
