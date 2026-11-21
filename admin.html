@@ -1,88 +1,130 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Elite CPM Garage Admin</title>
+  <meta name="theme-color" content="#0b0b0e">
+  <title>CPM STORE | Admin Panel</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin-panel.css?v=1">
 </head>
-<body>
+<body class="admin-page">
 
-<header>
-  <h1>ELITE CPM GARAGE</h1>
-  <p>PRIVATE ADMIN PANEL</p>
+<header class="admin-header">
+  <h1>CPM <span>STORE</span></h1>
+  <p>Admin Panel - Manage Cars &amp; Accounts</p>
 </header>
 
-<section id="login">
-  <h2>ADMIN LOGIN</h2>
-  <input id="email" type="email" placeholder="Admin email">
-  <input id="password" type="password" placeholder="Password">
-  <button class="btn" onclick="loginAdmin()">LOGIN</button>
-  <p id="message"></p>
-</section>
+<main class="admin-main">
+  <section id="login" class="admin-card login-card">
+    <h2>🔐 ADMIN LOGIN</h2>
+    <label for="email">Admin Email</label>
+    <input id="email" type="email" placeholder="Admin email" autocomplete="username">
+    <label for="password">Password</label>
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="admin-btn blue-btn" type="button" onclick="loginAdmin()">LOGIN</button>
+    <p id="message" class="admin-message"></p>
+  </section>
 
-<section id="dashboard" hidden>
-  <h2>STORE MANAGEMENT</h2>
+  <section id="dashboard" hidden>
+    <section class="admin-card">
+      <h2>🚗 ADD CAR</h2>
 
-  <input id="carName" placeholder="Car name">
+      <div class="admin-field">
+        <label for="carName">Car Name</label>
+        <input id="carName" type="text" placeholder="e.g. Toyota Corolla">
+      </div>
 
-  <label>Real Price (Old Price)</label>
-  <input id="originalPrice" type="number" placeholder="Enter Real Price" required>
+      <div class="admin-price-grid">
+        <div class="admin-field">
+          <label for="originalPrice">Real Price (Old)</label>
+          <input id="originalPrice" type="number" min="1" placeholder="Enter Real Price" required>
+        </div>
+        <div class="admin-field">
+          <label for="carPrice">Discounted Price (New)</label>
+          <input id="carPrice" type="number" min="1" placeholder="Enter Discounted Price" required>
+        </div>
+      </div>
 
-  <label>Discounted Price (New Price)</label>
-  <input id="carPrice" type="number" placeholder="Enter Discounted Price" required>
+      <div class="admin-field">
+        <label for="carDescription">Description</label>
+        <textarea id="carDescription" placeholder="Write car details..."></textarea>
+      </div>
 
-  <input id="carDescription" placeholder="Description">
+      <div class="admin-field">
+        <label for="carCategory">Car Category</label>
+        <select id="carCategory" required>
+          <option value="Trending Cars">Trending Cars</option>
+          <option value="New Update Cars">New Update Cars</option>
+          <option value="CPM2 Cars">CPM2 Cars</option>
+          <option value="ACCOUNTS">ACCOUNTS</option>
+        </select>
+      </div>
 
-  <label>Car Category</label>
-  <select id="carCategory" required>
-    <option value="Trending Cars">Trending Cars</option>
-    <option value="New Update Cars">New Update Cars</option>
-    <option value="CPM2 Cars">CPM2 Cars</option>
-    <option value="ACCOUNTS">ACCOUNTS</option>
-  </select>
+      <div class="admin-field">
+        <label for="carImageFile">Select Car Photo</label>
+        <div class="file-picker">
+          <span>📷 Choose Photo</span>
+          <input type="file" id="carImageFile" accept="image/*" required>
+        </div>
+      </div>
 
-<label for="carImageFile">Select First Car Photo</label>
-<input type="file" id="carImageFile" accept="image/*" required>
+      <div class="admin-field">
+        <label for="carImageFile2">Select Second Car Photo (Optional)</label>
+        <div class="file-picker">
+          <span>📷 Choose Second Photo</span>
+          <input type="file" id="carImageFile2" accept="image/*">
+        </div>
+      </div>
 
-<label for="carImageFile2">Select Second Car Photo</label>
-<input type="file" id="carImageFile2" accept="image/*">
+      <button type="button" class="admin-btn green-btn" onclick="addCar()">ADD CAR</button>
+    </section>
 
-  <button type="button" class="btn" onclick="addCar()">ADD CAR</button>
+    <section class="admin-card">
+      <h2>👤 ADD CPM ACCOUNT</h2>
 
-  <hr>
+      <div class="admin-field">
+        <label for="accountName">Account Name</label>
+        <input id="accountName" type="text" placeholder="Enter account name">
+      </div>
 
-  <h2>ADD CPM ACCOUNT</h2>
+      <div class="admin-field">
+        <label for="accountPrice">Account Price (PKR)</label>
+        <input id="accountPrice" type="number" min="1" placeholder="Enter account price">
+      </div>
 
-  <label>Account Name</label>
-  <input id="accountName" type="text" placeholder="Enter account name">
+      <div class="admin-field">
+        <label for="accountDescription">Description</label>
+        <textarea id="accountDescription" placeholder="Enter account details"></textarea>
+      </div>
 
-  <label>Account Price (PKR)</label>
-  <input id="accountPrice" type="number" placeholder="Enter account price">
+      <div class="admin-field">
+        <label for="accountVideoFile">Select Account Video</label>
+        <div class="file-picker">
+          <span>🎥 Choose Video</span>
+          <input type="file" id="accountVideoFile" accept="video/*">
+        </div>
+      </div>
 
-  <label>Account Description</label>
-  <textarea id="accountDescription" placeholder="Enter account details"></textarea>
+      <button type="button" class="admin-btn green-btn" onclick="addAccount()">ADD ACCOUNT</button>
+    </section>
 
-  <label>Select Account Video</label>
-  <input type="file" id="accountVideoFile" accept="video/*">
+    <section class="admin-card manage-card">
+      <h2>📋 MANAGE ACCOUNTS</h2>
+      <div id="adminAccounts"></div>
+    </section>
 
-  <button type="button" class="btn" onclick="addAccount()">ADD ACCOUNT</button>
+    <section class="admin-card manage-card">
+      <h2>🚘 MANAGE CARS / EDIT PRICES</h2>
+      <p class="admin-help">You can update the old price and discounted price of any car below.</p>
+      <div id="adminCars"></div>
+    </section>
 
-  <h2>MANAGE ACCOUNTS</h2>
-  <div id="adminAccounts"></div>
-
-  <hr>
-
-  <h2>MANAGE CARS / EDIT PRICES</h2>
-  <p>You can update the old price and discounted price of any car below.</p>
-  <div id="adminCars"></div>
-
-  <button class="btn" onclick="logoutAdmin()">LOGOUT</button>
-</section>
+    <button class="admin-btn logout-btn" type="button" onclick="logoutAdmin()">LOGOUT</button>
+  </section>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="admin.js"></script>
-
+<script src="admin.js?v=2"></script>
 </body>
 </html>

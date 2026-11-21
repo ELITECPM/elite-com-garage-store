@@ -1,0 +1,170 @@
+/* CPM STORE ADMIN PANEL — isolated styles */
+.admin-page {
+  background: #0b0b0e;
+  color: #f5f5f7;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.admin-page * { box-sizing: border-box; }
+.admin-header {
+  width: min(100% - 32px, 760px);
+  margin: 34px auto 38px;
+  text-align: center;
+}
+.admin-header h1 {
+  margin: 0;
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #f7f7f8;
+}
+.admin-header h1 span { color: #398cf4; }
+.admin-header p {
+  margin: 14px 0 0;
+  color: #aaaab0;
+  font-size: clamp(15px, 3.5vw, 22px);
+}
+.admin-main {
+  width: min(100% - 32px, 700px);
+  margin: 0 auto 50px;
+}
+.admin-page .admin-card {
+  display: block;
+  margin: 0 0 30px;
+  padding: clamp(22px, 5.5vw, 42px);
+  background: #1a1a1c;
+  border: 1px solid #343438;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.16);
+}
+.admin-page .admin-card h2 {
+  margin: 0 0 36px;
+  text-align: center;
+  color: #f7f7f8;
+  font-size: clamp(22px, 5vw, 32px);
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+.admin-field { margin: 0 0 28px; min-width: 0; }
+.admin-field label, .login-card label {
+  display: block;
+  margin: 0 0 14px;
+  color: #d0d0d3;
+  font-size: clamp(16px, 3.8vw, 22px);
+}
+.admin-page input:not([type="file"]),
+.admin-page textarea,
+.admin-page select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 76px;
+  padding: 18px 24px;
+  color: #f5f5f7;
+  background: #242426;
+  border: 2px solid #38383c;
+  border-radius: 22px;
+  outline: none;
+  font-size: clamp(17px, 4vw, 23px);
+  font-family: inherit;
+}
+.admin-page textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.45;
+}
+.admin-page input::placeholder,
+.admin-page textarea::placeholder { color: #a5a5aa; opacity: 1; }
+.admin-page input:focus,
+.admin-page textarea:focus,
+.admin-page select:focus { border-color: #398cf4; }
+.admin-price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: end;
+}
+.admin-price-grid .admin-field { min-width: 0; }
+.admin-price-grid input { padding-left: 16px !important; padding-right: 12px !important; }
+.file-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 112px;
+  padding: 18px;
+  overflow: hidden;
+  color: #bcbcc2;
+  background: #242426;
+  border: 2px dashed #45454b;
+  border-radius: 22px;
+  font-size: clamp(17px, 4vw, 22px);
+}
+.file-picker input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.admin-btn {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  margin-top: 12px;
+  padding: 18px 22px;
+  border: 0;
+  border-radius: 22px;
+  color: #fff;
+  font-size: clamp(19px, 4.5vw, 26px);
+  font-weight: 800;
+  cursor: pointer;
+}
+.admin-btn:disabled { opacity: .65; cursor: wait; }
+.green-btn { background: linear-gradient(110deg, #20c96b, #159b91); }
+.blue-btn { background: linear-gradient(110deg, #398cf4, #2672dc); }
+.logout-btn { background: #b83232; margin-bottom: 35px; }
+.admin-message { color: #ffb2b2; font-size: 15px; }
+.admin-help { color: #aaaab0; line-height: 1.5; margin: -18px 0 24px; }
+.manage-card #adminAccounts,
+.manage-card #adminCars { display: grid; gap: 16px; }
+.admin-page .admin-car-item,
+.manage-card #adminAccounts > div {
+  padding: 20px;
+  margin: 0;
+  border: 1px solid #38383c;
+  border-radius: 18px;
+  background: #222225;
+  overflow-wrap: anywhere;
+}
+.admin-page .admin-car-item h3,
+.manage-card #adminAccounts h3 { color: #fff; margin-top: 0; }
+.admin-page .admin-car-item button,
+.manage-card #adminAccounts button {
+  min-height: 48px;
+  margin: 10px 8px 0 0;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background: #287fe7;
+  font-weight: 700;
+}
+.manage-card video { display: block; width: 100%; max-width: 100%; border-radius: 14px; margin-top: 12px; }
+.login-card { max-width: 560px; margin-left: auto !important; margin-right: auto !important; }
+.login-card .admin-btn { margin-top: 22px; }
+@media (max-width: 520px) {
+  .admin-header { margin-top: 26px; margin-bottom: 30px; }
+  .admin-main { width: min(100% - 22px, 700px); }
+  .admin-page .admin-card { border-radius: 25px; padding: 24px 20px; }
+  .admin-page .admin-card h2 { margin-bottom: 28px; }
+  .admin-price-grid { grid-template-columns: 1fr; gap: 0; }
+  .admin-page input:not([type="file"]), .admin-page textarea, .admin-page select {
+    min-height: 68px; border-radius: 18px; padding: 16px 18px;
+  }
+  .admin-page textarea { min-height: 140px; }
+  .admin-btn { min-height: 76px; border-radius: 18px; }
+}
