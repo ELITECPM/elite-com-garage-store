@@ -542,3 +542,49 @@ footer {
 #accountList img {
   display: none !important;
 }
+
+/* ADMIN CAR PRICE EDITING */
+
+#adminCars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.admin-car-item {
+  background: #111827;
+  border: 1px solid #2589ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.admin-car-item h3 {
+  color: #65b5ff;
+  margin-bottom: 15px;
+}
+
+.admin-car-item label {
+  display: block;
+  color: white;
+  margin: 10px 0 5px;
+}
+
+.admin-car-item input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  background: #171717;
+  color: white;
+  padding: 12px;
+  border: 1px solid #2589ff;
+  border-radius: 8px;
+}
+
+.admin-car-item button {
+  margin: 8px 5px 0 0;
+}
