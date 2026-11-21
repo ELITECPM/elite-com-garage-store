@@ -3,7 +3,16 @@ const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
 
 
-const supabaseClient = supabase.createClient(
+// =====================================
+// SUPABASE CONFIGURATION
+// =====================================
+
+const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
+
+// Initialize Supabase only once
+const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -17,6 +26,7 @@ let allCars = [];
 let currentCategory = "All";
 
 async function loadCars() {
+
   const { data, error } = await supabaseClient
     .from("cars")
     .select("*")
@@ -46,18 +56,19 @@ function filterCars(category) {
 
 
 // =====================================
-// OPEN CAR DETAILS IN NEW TAB
+// OPEN CAR DETAILS
 // =====================================
 
 function openCarDetails(car) {
+
   if (!car || !car.id) {
     alert("Car details unavailable.");
     return;
   }
 
   const url = new URL(
-    "/car-details.html",
-    window.location.origin
+    "view-car-details.html",
+    window.location.href
   );
 
   url.searchParams.set("id", car.id);
@@ -71,6 +82,7 @@ function openCarDetails(car) {
 // =====================================
 
 function searchCars() {
+
   const carList = document.getElementById("carList");
   const searchInput = document.getElementById("carSearch");
 
@@ -83,6 +95,7 @@ function searchCars() {
   carList.innerHTML = "";
 
   const filteredCars = allCars.filter(car => {
+
     const matchesCategory =
       currentCategory === "All" ||
       (car.category || "Trending Cars") === currentCategory;
@@ -91,6 +104,7 @@ function searchCars() {
       (car.name || "").toLowerCase().includes(searchText);
 
     return matchesCategory && matchesSearch;
+
   });
 
   if (filteredCars.length === 0) {
@@ -99,6 +113,7 @@ function searchCars() {
   }
 
   filteredCars.forEach((car, index) => {
+
     const card = document.createElement("div");
     card.className = "car-card";
 
@@ -111,6 +126,7 @@ function searchCars() {
     image.onclick = () => openCarDetails(car);
 
     if (index === 0 && currentCategory === "All" && !searchText) {
+
       const newBadge = document.createElement("span");
 
       newBadge.textContent = "NEW ARRIVAL";
@@ -159,6 +175,7 @@ function searchCars() {
     );
 
     carList.appendChild(card);
+
   });
 }
 
@@ -170,6 +187,7 @@ function searchCars() {
 let allAccounts = [];
 
 async function loadAccounts() {
+
   const accountList = document.getElementById("accountList");
 
   if (!accountList) return;
@@ -177,6 +195,7 @@ async function loadAccounts() {
   accountList.textContent = "Loading CPM accounts...";
 
   try {
+
     const { data, error } = await supabaseClient
       .from("accounts")
       .select("id, name, price, description, video_url, created_at")
@@ -190,15 +209,18 @@ async function loadAccounts() {
     searchAccounts();
 
   } catch (error) {
+
     console.error("Loading accounts failed:", error);
 
     accountList.textContent =
       "Unable to load accounts. Please try again later.";
+
   }
 }
 
 
 function searchAccounts() {
+
   const accountList = document.getElementById("accountList");
   const searchInput = document.getElementById("accountSearch");
 
@@ -211,21 +233,27 @@ function searchAccounts() {
   accountList.innerHTML = "";
 
   const filteredAccounts = allAccounts.filter(account => {
+
     const name = (account.name || "").toLowerCase();
+
     const description = (account.description || "").toLowerCase();
 
     return (
       name.includes(searchText) ||
       description.includes(searchText)
     );
+
   });
 
   if (filteredAccounts.length === 0) {
+
     accountList.textContent = "No CPM accounts available.";
     return;
+
   }
 
   filteredAccounts.forEach(account => {
+
     const card = document.createElement("div");
     card.className = "account-card";
 
@@ -241,6 +269,7 @@ function searchAccounts() {
     card.append(name, price, description);
 
     if (account.video_url) {
+
       const video = document.createElement("video");
 
       video.className = "account-video";
@@ -250,10 +279,15 @@ function searchAccounts() {
       video.src = account.video_url;
 
       card.appendChild(video);
+
     } else {
+
       const noVideo = document.createElement("p");
+
       noVideo.textContent = "Video not available.";
+
       card.appendChild(noVideo);
+
     }
 
     const orderButton = document.createElement("button");
@@ -265,7 +299,9 @@ function searchAccounts() {
     };
 
     card.appendChild(orderButton);
+
     accountList.appendChild(card);
+
   });
 }
 
@@ -275,6 +311,7 @@ function searchAccounts() {
 // =====================================
 
 function orderAccountOnWhatsApp(accountName, accountPrice) {
+
   const phone = "923196603839";
 
   const message =
@@ -289,6 +326,7 @@ function orderAccountOnWhatsApp(accountName, accountPrice) {
     "?text=" + encodeURIComponent(message),
     "_blank"
   );
+
 }
 
 
@@ -297,6 +335,7 @@ function orderAccountOnWhatsApp(accountName, accountPrice) {
 // =====================================
 
 function orderOnWhatsApp(carName, carPrice) {
+
   const phone = "923196603839";
 
   const message = `Hello ELITE CPM GARAGE!
@@ -310,6 +349,7 @@ Please send me your account details.`;
     `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
     "_blank"
   );
+
 }
 
 
@@ -320,6 +360,7 @@ Please send me your account details.`;
 let cart = [];
 
 try {
+
   cart = JSON.parse(
     localStorage.getItem("eliteCart") || "[]"
   );
@@ -327,37 +368,51 @@ try {
   if (!Array.isArray(cart)) cart = [];
 
 } catch (error) {
+
   cart = [];
+
 }
 
 
 function saveCart() {
-  localStorage.setItem("eliteCart", JSON.stringify(cart));
+
+  localStorage.setItem(
+    "eliteCart",
+    JSON.stringify(cart)
+  );
+
 }
 
 
 function addToCart(car) {
+
   const existing = cart.find(
     item => String(item.id) === String(car.id)
   );
 
   if (existing) {
+
     existing.quantity = (existing.quantity || 1) + 1;
+
   } else {
+
     cart.push({
       ...car,
       quantity: 1
     });
+
   }
 
   saveCart();
   updateCart();
 
   alert("Car added to cart!");
+
 }
 
 
 function showCart() {
+
   const box = document.getElementById("cartBox");
 
   if (!box) return;
@@ -366,12 +421,20 @@ function showCart() {
     box.style.display === "none" ? "block" : "none";
 
   updateCart();
+
 }
 
 
+// =====================================
+// UPDATE CART
+// =====================================
+
 function updateCart() {
+
   const count = document.getElementById("cartCount");
+
   const items = document.getElementById("cartItems");
+
   const totalElement = document.getElementById("cartTotal");
 
   if (!count || !items || !totalElement) return;
@@ -390,6 +453,7 @@ function updateCart() {
   items.innerHTML = "";
 
   cart.forEach((car, index) => {
+
     const item = document.createElement("p");
 
     item.textContent =
@@ -402,16 +466,22 @@ function updateCart() {
     remove.textContent = "Remove";
 
     remove.onclick = () => {
+
       cart.splice(index, 1);
+
       saveCart();
       updateCart();
+
     };
 
     item.appendChild(remove);
+
     items.appendChild(item);
+
   });
 
   totalElement.textContent = total;
+
 }
 
 
@@ -420,15 +490,20 @@ function updateCart() {
 // =====================================
 
 function checkoutCart() {
+
   if (cart.length === 0) {
+
     alert("Your cart is empty!");
     return;
+
   }
 
   const order = cart.map(car =>
+
     car.name + " x" + (car.quantity || 1) +
     " - PKR " +
     Number(car.price) * (car.quantity || 1)
+
   ).join("\n");
 
   const total = cart.reduce(
@@ -446,6 +521,7 @@ function checkoutCart() {
     encodeURIComponent(message),
     "_blank"
   );
+
 }
 
 
@@ -454,9 +530,12 @@ function checkoutCart() {
 // =====================================
 
 function chooseOrderMethod() {
+
   if (cart.length === 0) {
+
     alert("Your cart is empty!");
     return;
+
   }
 
   const popup = document.createElement("div");
@@ -472,6 +551,7 @@ function chooseOrderMethod() {
   `;
 
   popup.innerHTML = `
+
     <div style="
       background: #191919;
       padding: 25px;
@@ -521,27 +601,36 @@ function chooseOrderMethod() {
       ">CANCEL</button>
 
     </div>
+
   `;
 
   document.body.appendChild(popup);
 
   popup.querySelector("#zbWhatsApp").onclick = function() {
+
     popup.remove();
+
     checkoutCart();
+
   };
 
   popup.querySelector("#zbTikTok").onclick = function() {
+
     popup.remove();
 
     window.open(
       "https://www.tiktok.com/@elitecpmgarage",
       "_blank"
     );
+
   };
 
   popup.querySelector("#closeOrderPopup").onclick = function() {
+
     popup.remove();
+
   };
+
 }
 
 
@@ -550,7 +639,11 @@ function chooseOrderMethod() {
 // =====================================
 
 document.addEventListener("DOMContentLoaded", () => {
+
   loadCars();
+
   loadAccounts();
+
   updateCart();
+
 });
