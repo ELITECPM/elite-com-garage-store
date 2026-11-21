@@ -429,12 +429,12 @@ function chooseOrderMethod() {
 
   document.body.appendChild(popup);
 
-  popup.querySelector("#zbWhatsApp").onclick = function() {
+  popup.querySelector("#eliteWhatsApp").onclick = function() {
     popup.remove();
     checkoutCart();
   };
 
-  popup.querySelector("#zbTikTok").onclick = function() {
+  popup.querySelector("#eliteTikTok").onclick = function() {
     popup.remove();
 
     window.open(
