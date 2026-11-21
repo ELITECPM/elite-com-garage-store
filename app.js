@@ -2,6 +2,7 @@ const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
 
+
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -54,10 +55,14 @@ function openCarDetails(car) {
     return;
   }
 
-  const url =
-    "car-details.html?id=" + encodeURIComponent(car.id);
+  const url = new URL(
+    "/car-details.html",
+    window.location.origin
+  );
 
-  window.open(url, "_blank");
+  url.searchParams.set("id", car.id);
+
+  window.open(url.href, "_blank");
 }
 
 
@@ -97,17 +102,14 @@ function searchCars() {
     const card = document.createElement("div");
     card.className = "car-card";
 
-    // CAR IMAGE
     const image = document.createElement("img");
 
     image.src = car.image_url;
     image.alt = car.name;
     image.loading = "lazy";
     image.style.cursor = "pointer";
-
     image.onclick = () => openCarDetails(car);
 
-    // NEW ARRIVAL LABEL
     if (index === 0 && currentCategory === "All" && !searchText) {
       const newBadge = document.createElement("span");
 
@@ -117,37 +119,30 @@ function searchCars() {
       card.appendChild(newBadge);
     }
 
-    // CAR NAME
     const name = document.createElement("h3");
 
     name.textContent = car.name;
     name.style.cursor = "pointer";
-
     name.onclick = () => openCarDetails(car);
 
-    // OLD PRICE
     const oldPrice = document.createElement("p");
 
     oldPrice.textContent = "PKR " + car.original_price;
     oldPrice.style.textDecoration = "line-through";
 
-    // NEW PRICE
     const price = document.createElement("h3");
 
     price.textContent = "PKR " + car.price;
 
-    // DESCRIPTION
     const description = document.createElement("p");
 
     description.textContent = car.description || "";
 
-    // VIEW DETAILS BUTTON
     const detailsButton = document.createElement("button");
 
     detailsButton.textContent = "VIEW DETAILS";
     detailsButton.onclick = () => openCarDetails(car);
 
-    // ADD TO CART BUTTON
     const button = document.createElement("button");
 
     button.textContent = "ADD TO CART";
@@ -559,5 +554,3 @@ document.addEventListener("DOMContentLoaded", () => {
   loadAccounts();
   updateCart();
 });
-
-
