@@ -1,6 +1,7 @@
 const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
+
 const db = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -123,17 +124,104 @@ async function loadCars() {
 
   (data || []).forEach(car => {
     const item = document.createElement("div");
+    item.className = "admin-car-item";
 
-    const name = document.createElement("p");
-    name.textContent = `${car.name} - PKR ${car.price}`;
+    const name = document.createElement("h3");
+    name.textContent = car.name;
+
+    const originalLabel = document.createElement("label");
+    originalLabel.textContent = "Real Price (Old Price)";
+
+    const originalInput = document.createElement("input");
+    originalInput.type = "number";
+    originalInput.min = "1";
+    originalInput.value = car.original_price ?? "";
+
+    const priceLabel = document.createElement("label");
+    priceLabel.textContent = "Discounted Price (New Price)";
+
+    const priceInput = document.createElement("input");
+    priceInput.type = "number";
+    priceInput.min = "1";
+    priceInput.value = car.price ?? "";
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "SAVE PRICE";
+    saveButton.className = "btn";
+
+    saveButton.onclick = () => {
+      updateCarPrice(
+        car.id,
+        originalInput.value,
+        priceInput.value,
+        saveButton
+      );
+    };
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "DELETE";
     deleteButton.onclick = () => deleteCar(car.id);
 
-    item.append(name, deleteButton);
+    item.append(
+      name,
+      originalLabel,
+      originalInput,
+      priceLabel,
+      priceInput,
+      saveButton,
+      deleteButton
+    );
+
     container.appendChild(item);
   });
+}
+
+// ============================
+// UPDATE CAR PRICE
+// ============================
+
+async function updateCarPrice(id, originalValue, priceValue, button) {
+  const originalPrice = Number(originalValue);
+  const price = Number(priceValue);
+
+  if (
+    !originalValue ||
+    !priceValue ||
+    !Number.isFinite(originalPrice) ||
+    !Number.isFinite(price) ||
+    originalPrice <= 0 ||
+    price <= 0
+  ) {
+    alert("Please enter valid prices greater than zero.");
+    return;
+  }
+
+  if (originalPrice < price) {
+    alert("Real price must be greater than or equal to discounted price.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "SAVING...";
+
+  const { error } = await db
+    .from("cars")
+    .update({
+      original_price: originalPrice,
+      price: price
+    })
+    .eq("id", id);
+
+  button.disabled = false;
+  button.textContent = "SAVE PRICE";
+
+  if (error) {
+    alert("Price update failed: " + error.message);
+    return;
+  }
+
+  alert("Car price updated successfully!");
+  loadCars();
 }
 
 // ============================
@@ -180,8 +268,6 @@ async function addAccount() {
   const extension = file.name.split(".").pop();
   const filePath = `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
 
-  // Upload video to Supabase Storage
-
   const { error: uploadError } = await db.storage
     .from("account-videos")
     .upload(filePath, file, {
@@ -194,13 +280,9 @@ async function addAccount() {
     return;
   }
 
-  // Get public video URL
-
   const { data: videoData } = db.storage
     .from("account-videos")
     .getPublicUrl(filePath);
-
-  // Save account information in accounts table
 
   const { error } = await db.from("accounts").insert([{
     name: name,
@@ -293,7 +375,6 @@ async function deleteAccount(id) {
   }
 
   alert("Account deleted successfully!");
-
   loadAccounts();
 }
 
