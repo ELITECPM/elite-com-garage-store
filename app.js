@@ -2,6 +2,7 @@ const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
 
+
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -20,7 +21,8 @@ async function loadCars() {
     .from("cars")
     .select("*")
     .eq("is_active", true)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false });
 
   if (error) {
     console.error("Loading cars failed:", error);
@@ -28,13 +30,21 @@ async function loadCars() {
   }
 
   allCars = data || [];
+
+  // Keep newest cars at the beginning
+  allCars.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+
   searchCars();
 }
+
 
 function filterCars(category) {
   currentCategory = category;
   searchCars();
 }
+
 
 function searchCars() {
   const carList = document.getElementById("carList");
@@ -64,26 +74,42 @@ function searchCars() {
     return;
   }
 
-  filteredCars.forEach(car => {
+  filteredCars.forEach((car, index) => {
     const card = document.createElement("div");
+    card.className = "car-card";
 
+    // CAR IMAGE
     const image = document.createElement("img");
     image.src = car.image_url;
     image.alt = car.name;
+    image.loading = "lazy";
 
+    // NEW ARRIVAL LABEL FOR LATEST CAR
+    if (index === 0 && currentCategory === "All" && !searchText) {
+      const newBadge = document.createElement("span");
+      newBadge.textContent = "NEW ARRIVAL";
+      newBadge.className = "new-arrival-badge";
+      card.appendChild(newBadge);
+    }
+
+    // CAR NAME
     const name = document.createElement("h3");
     name.textContent = car.name;
 
+    // OLD PRICE
     const oldPrice = document.createElement("p");
     oldPrice.textContent = "PKR " + car.original_price;
     oldPrice.style.textDecoration = "line-through";
 
+    // NEW PRICE
     const price = document.createElement("h3");
     price.textContent = "PKR " + car.price;
 
+    // DESCRIPTION
     const description = document.createElement("p");
     description.textContent = car.description || "";
 
+    // ADD TO CART BUTTON
     const button = document.createElement("button");
     button.textContent = "ADD TO CART";
     button.onclick = () => addToCart(car);
@@ -115,24 +141,25 @@ async function loadAccounts() {
 
   accountList.textContent = "Loading CPM accounts...";
 
-  const { data, error } = await supabaseClient
-    .from("accounts")
-    .select("*")
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await supabaseClient
+      .from("accounts")
+      .select("id, name, price, description, video_url, created_at")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
 
-  if (error) {
+    if (error) throw error;
+
+    allAccounts = data || [];
+
+    searchAccounts();
+
+  } catch (error) {
     console.error("Loading accounts failed:", error);
 
     accountList.textContent =
       "Unable to load accounts. Please try again later.";
-
-    return;
   }
-
-  allAccounts = data || [];
-
-  searchAccounts();
 }
 
 
@@ -167,58 +194,41 @@ function searchAccounts() {
     const card = document.createElement("div");
     card.className = "account-card";
 
-    // ACCOUNT NAME
     const name = document.createElement("h3");
     name.textContent = account.name || "CPM Account";
 
-    // ACCOUNT PRICE
     const price = document.createElement("h3");
     price.textContent = "PKR " + account.price;
 
-    // ACCOUNT DESCRIPTION
     const description = document.createElement("p");
     description.textContent = account.description || "";
 
-    // ACCOUNT VIDEO
-    const video = document.createElement("video");
-
-    video.className = "account-video";
-    video.controls = true;
-    video.playsInline = true;
-    video.preload = "metadata";
+    card.append(name, price, description);
 
     if (account.video_url) {
-      video.src = account.video_url;
-    } else {
-      video.hidden = true;
+      const video = document.createElement("video");
 
+      video.className = "account-video";
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = "none";
+      video.src = account.video_url;
+
+      card.appendChild(video);
+    } else {
       const noVideo = document.createElement("p");
       noVideo.textContent = "Video not available.";
       card.appendChild(noVideo);
     }
 
-    // ORDER ACCOUNT BUTTON
     const orderButton = document.createElement("button");
-
     orderButton.textContent = "ORDER ACCOUNT";
 
     orderButton.onclick = () => {
       orderAccountOnWhatsApp(account.name, account.price);
     };
 
-    // ADD ELEMENTS TO ACCOUNT CARD
-    card.append(
-      name,
-      price,
-      description
-    );
-
-    if (account.video_url) {
-      card.appendChild(video);
-    }
-
     card.appendChild(orderButton);
-
     accountList.appendChild(card);
   });
 }
@@ -279,6 +289,7 @@ function addToCart(car) {
   alert("Car added to cart!");
 }
 
+
 function showCart() {
   const box = document.getElementById("cartBox");
 
@@ -287,6 +298,7 @@ function showCart() {
 
   updateCart();
 }
+
 
 function updateCart() {
   document.getElementById("cartCount").textContent = cart.length;
@@ -306,7 +318,6 @@ function updateCart() {
     item.textContent = car.name + " - PKR " + car.price;
 
     const remove = document.createElement("button");
-
     remove.textContent = "Remove";
 
     remove.onclick = () => {
@@ -423,7 +434,7 @@ function chooseOrderMethod() {
     checkoutCart();
   };
 
-  popup.querySelector("#eliteTikTok").onclick = function() {
+  popup.querySelector("#zbTikTok").onclick = function() {
     popup.remove();
 
     window.open(
