@@ -1,99 +1,85 @@
+
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Elite CPM Garage Admin</title>
-
   <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
 
 <header>
-
   <h1>ELITE CPM GARAGE</h1>
-
   <p>PRIVATE ADMIN PANEL</p>
-
 </header>
 
 <section id="login">
-
   <h2>ADMIN LOGIN</h2>
-
   <input id="email" type="email" placeholder="Admin email">
-
   <input id="password" type="password" placeholder="Password">
-
   <button class="btn" onclick="loginAdmin()">LOGIN</button>
-
   <p id="message"></p>
-
 </section>
 
 <section id="dashboard" hidden>
-
   <h2>STORE MANAGEMENT</h2>
 
   <input id="carName" placeholder="Car name">
-<label>Real Price (Old Price)</label>
-<input id="originalPrice" type="number" placeholder="Enter Real Price" required>
 
-<label>Discounted Price (New Price)</label>
-<input id="carPrice" type="number" placeholder="Enter Discounted Price" required>
+  <label>Real Price (Old Price)</label>
+  <input id="originalPrice" type="number" placeholder="Enter Real Price" required>
+
+  <label>Discounted Price (New Price)</label>
+  <input id="carPrice" type="number" placeholder="Enter Discounted Price" required>
+
   <input id="carDescription" placeholder="Description">
-<label>Car Category</label>
-<select id="carCategory" required>
-  <option value="Trending Cars">Trending Cars</option>
-  <option value="New Update Cars">New Update Cars</option>
-  <option value="CPM2 Cars">CPM2 Cars</option>
+
+  <label>Car Category</label>
+  <select id="carCategory" required>
+    <option value="Trending Cars">Trending Cars</option>
+    <option value="New Update Cars">New Update Cars</option>
+    <option value="CPM2 Cars">CPM2 Cars</option>
     <option value="ACCOUNTS">ACCOUNTS</option>
-</select>
-<label for="carImageFile">Select Car Photo</label>
-<input type="file" id="carImageFile" accept="image/*">
+  </select>
 
-<button type="button" class="btn" onclick="addCar()">ADD CAR</button>
-<hr>
+  <label for="carImageFile">Select Car Photo</label>
+  <input type="file" id="carImageFile" accept="image/*">
 
-<h2>ADD CPM ACCOUNT</h2>
+  <button type="button" class="btn" onclick="addCar()">ADD CAR</button>
 
-<label>Account Name</label>
-<input id="accountName" type="text" placeholder="Enter account name">
+  <hr>
 
-<label>Account Price (PKR)</label>
-<input id="accountPrice" type="number" placeholder="Enter account price">
+  <h2>ADD CPM ACCOUNT</h2>
 
-<label>Account Description</label>
-<textarea id="accountDescription" placeholder="Enter account details"></textarea>
+  <label>Account Name</label>
+  <input id="accountName" type="text" placeholder="Enter account name">
 
-<label>Select Account Video</label>
-<input
-  type="file"
-  id="accountVideoFile"
-  accept="video/*"
->
+  <label>Account Price (PKR)</label>
+  <input id="accountPrice" type="number" placeholder="Enter account price">
 
-<button type="button" class="btn" onclick="addAccount()">
-  ADD ACCOUNT
-</button>
+  <label>Account Description</label>
+  <textarea id="accountDescription" placeholder="Enter account details"></textarea>
 
-<h2>MANAGE ACCOUNTS</h2>
-<div id="adminAccounts"></div>
-  <button class="btn" onclick="logoutAdmin()">LOGOUT</button>
+  <label>Select Account Video</label>
+  <input type="file" id="accountVideoFile" accept="video/*">
 
+  <button type="button" class="btn" onclick="addAccount()">ADD ACCOUNT</button>
+
+  <h2>MANAGE ACCOUNTS</h2>
+  <div id="adminAccounts"></div>
+
+  <hr>
+
+  <h2>MANAGE CARS / EDIT PRICES</h2>
+  <p>You can update the old price and discounted price of any car below.</p>
   <div id="adminCars"></div>
 
+  <button class="btn" onclick="logoutAdmin()">LOGOUT</button>
 </section>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="admin.js"></script>
 
 </body>
-
 </html>
