@@ -2,7 +2,6 @@ const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
 
 
-
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -31,7 +30,6 @@ async function loadCars() {
 
   allCars = data || [];
 
-  // Keep newest cars at the beginning
   allCars.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
@@ -45,6 +43,27 @@ function filterCars(category) {
   searchCars();
 }
 
+
+// =====================================
+// OPEN CAR DETAILS IN NEW TAB
+// =====================================
+
+function openCarDetails(car) {
+  if (!car || !car.id) {
+    alert("Car details unavailable.");
+    return;
+  }
+
+  const url =
+    "car-details.html?id=" + encodeURIComponent(car.id);
+
+  window.open(url, "_blank");
+}
+
+
+// =====================================
+// SEARCH AND DISPLAY CARS
+// =====================================
 
 function searchCars() {
   const carList = document.getElementById("carList");
@@ -80,37 +99,57 @@ function searchCars() {
 
     // CAR IMAGE
     const image = document.createElement("img");
+
     image.src = car.image_url;
     image.alt = car.name;
     image.loading = "lazy";
+    image.style.cursor = "pointer";
 
-    // NEW ARRIVAL LABEL FOR LATEST CAR
+    image.onclick = () => openCarDetails(car);
+
+    // NEW ARRIVAL LABEL
     if (index === 0 && currentCategory === "All" && !searchText) {
       const newBadge = document.createElement("span");
+
       newBadge.textContent = "NEW ARRIVAL";
       newBadge.className = "new-arrival-badge";
+
       card.appendChild(newBadge);
     }
 
     // CAR NAME
     const name = document.createElement("h3");
+
     name.textContent = car.name;
+    name.style.cursor = "pointer";
+
+    name.onclick = () => openCarDetails(car);
 
     // OLD PRICE
     const oldPrice = document.createElement("p");
+
     oldPrice.textContent = "PKR " + car.original_price;
     oldPrice.style.textDecoration = "line-through";
 
     // NEW PRICE
     const price = document.createElement("h3");
+
     price.textContent = "PKR " + car.price;
 
     // DESCRIPTION
     const description = document.createElement("p");
+
     description.textContent = car.description || "";
+
+    // VIEW DETAILS BUTTON
+    const detailsButton = document.createElement("button");
+
+    detailsButton.textContent = "VIEW DETAILS";
+    detailsButton.onclick = () => openCarDetails(car);
 
     // ADD TO CART BUTTON
     const button = document.createElement("button");
+
     button.textContent = "ADD TO CART";
     button.onclick = () => addToCart(car);
 
@@ -120,6 +159,7 @@ function searchCars() {
       oldPrice,
       price,
       description,
+      detailsButton,
       button
     );
 
@@ -222,6 +262,7 @@ function searchAccounts() {
     }
 
     const orderButton = document.createElement("button");
+
     orderButton.textContent = "ORDER ACCOUNT";
 
     orderButton.onclick = () => {
@@ -283,15 +324,48 @@ Please send me your account details.`;
 
 let cart = [];
 
+try {
+  cart = JSON.parse(
+    localStorage.getItem("eliteCart") || "[]"
+  );
+
+  if (!Array.isArray(cart)) cart = [];
+
+} catch (error) {
+  cart = [];
+}
+
+
+function saveCart() {
+  localStorage.setItem("eliteCart", JSON.stringify(cart));
+}
+
+
 function addToCart(car) {
-  cart.push(car);
+  const existing = cart.find(
+    item => String(item.id) === String(car.id)
+  );
+
+  if (existing) {
+    existing.quantity = (existing.quantity || 1) + 1;
+  } else {
+    cart.push({
+      ...car,
+      quantity: 1
+    });
+  }
+
+  saveCart();
   updateCart();
+
   alert("Car added to cart!");
 }
 
 
 function showCart() {
   const box = document.getElementById("cartBox");
+
+  if (!box) return;
 
   box.style.display =
     box.style.display === "none" ? "block" : "none";
@@ -301,12 +375,20 @@ function showCart() {
 
 
 function updateCart() {
-  document.getElementById("cartCount").textContent = cart.length;
-
+  const count = document.getElementById("cartCount");
   const items = document.getElementById("cartItems");
+  const totalElement = document.getElementById("cartTotal");
+
+  if (!count || !items || !totalElement) return;
+
+  count.textContent = cart.reduce(
+    (sum, car) => sum + (car.quantity || 1),
+    0
+  );
 
   const total = cart.reduce(
-    (sum, car) => sum + Number(car.price),
+    (sum, car) =>
+      sum + Number(car.price) * (car.quantity || 1),
     0
   );
 
@@ -315,13 +397,18 @@ function updateCart() {
   cart.forEach((car, index) => {
     const item = document.createElement("p");
 
-    item.textContent = car.name + " - PKR " + car.price;
+    item.textContent =
+      car.name + " x" + (car.quantity || 1) +
+      " - PKR " +
+      Number(car.price) * (car.quantity || 1);
 
     const remove = document.createElement("button");
+
     remove.textContent = "Remove";
 
     remove.onclick = () => {
       cart.splice(index, 1);
+      saveCart();
       updateCart();
     };
 
@@ -329,7 +416,7 @@ function updateCart() {
     items.appendChild(item);
   });
 
-  document.getElementById("cartTotal").textContent = total;
+  totalElement.textContent = total;
 }
 
 
@@ -344,11 +431,14 @@ function checkoutCart() {
   }
 
   const order = cart.map(car =>
-    car.name + " - PKR " + car.price
+    car.name + " x" + (car.quantity || 1) +
+    " - PKR " +
+    Number(car.price) * (car.quantity || 1)
   ).join("\n");
 
   const total = cart.reduce(
-    (sum, car) => sum + Number(car.price),
+    (sum, car) =>
+      sum + Number(car.price) * (car.quantity || 1),
     0
   );
 
@@ -394,10 +484,10 @@ function chooseOrderMethod() {
       text-align: center;
       width: 85%;
       max-width: 350px;
-      border: 1px solid #e5b83f;
+      border: 1px solid #2589ff;
     ">
 
-      <h2 style="color:#ffd76a; margin-bottom:20px;">
+      <h2 style="color:#65b5ff; margin-bottom:20px;">
         Choose Order Method
       </h2>
 
@@ -424,23 +514,38 @@ function chooseOrderMethod() {
         font-weight:bold;
       ">TikTok</button>
 
+      <button id="closeOrderPopup" style="
+        display:block;
+        width:100%;
+        padding:10px;
+        margin-top:12px;
+        background:#555;
+        color:white;
+        border:0;
+        border-radius:8px;
+      ">CANCEL</button>
+
     </div>
   `;
 
   document.body.appendChild(popup);
 
-  popup.querySelector("#eliteWhatsApp").onclick = function() {
+  popup.querySelector("#zbWhatsApp").onclick = function() {
     popup.remove();
     checkoutCart();
   };
 
-  popup.querySelector("#eliteTikTok").onclick = function() {
+  popup.querySelector("#zbTikTok").onclick = function() {
     popup.remove();
 
     window.open(
       "https://www.tiktok.com/@elitecpmgarage",
       "_blank"
     );
+  };
+
+  popup.querySelector("#closeOrderPopup").onclick = function() {
+    popup.remove();
   };
 }
 
@@ -452,4 +557,7 @@ function chooseOrderMethod() {
 document.addEventListener("DOMContentLoaded", () => {
   loadCars();
   loadAccounts();
+  updateCart();
 });
+
+
