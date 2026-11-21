@@ -109,6 +109,7 @@ async function addCar() {
 // ============================
 
 async function loadCars() {
+  console.log("NEW PRICE EDITING VERSION LOADED");
   const { data, error } = await db
     .from("cars")
     .select("*")
