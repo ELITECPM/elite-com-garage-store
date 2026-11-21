@@ -33,7 +33,7 @@ async function loginAdmin() {
 }
 
 // ============================
-// ADD CAR
+// ADD CAR WITH TWO PHOTOS
 // ============================
 
 async function addCar() {
@@ -42,10 +42,12 @@ async function addCar() {
   const originalPrice = Number(document.getElementById("originalPrice").value);
   const description = document.getElementById("carDescription").value.trim();
   const category = document.getElementById("carCategory").value;
-  const file = document.getElementById("carImageFile").files[0];
 
-  if (!name || !price || !originalPrice || !file) {
-    alert("Enter car name, both prices and select a photo.");
+  const file1 = document.getElementById("carImageFile").files[0];
+  const file2 = document.getElementById("carImageFile2").files[0];
+
+  if (!name || !price || !originalPrice || !file1) {
+    alert("Enter car name, both prices and select the first photo.");
     return;
   }
 
@@ -59,49 +61,71 @@ async function addCar() {
     return;
   }
 
-  const extension = file.name.split(".").pop();
-  const filePath = `${Date.now()}.${extension}`;
-
-  const { error: uploadError } = await db.storage
-    .from("car-images")
-    .upload(filePath, file, {
-      contentType: file.type,
-      upsert: false
-    });
-
-  if (uploadError) {
-    alert("Photo upload failed: " + uploadError.message);
+  if (!file1.type.startsWith("image/")) {
+    alert("Please select a valid first image.");
     return;
   }
 
-  const { data: imageData } = db.storage
-    .from("car-images")
-    .getPublicUrl(filePath);
-
-  const { error } = await db.from("cars").insert([{
-    name,
-    price,
-    original_price: originalPrice,
-    description,
-    category,
-    image_url: imageData.publicUrl,
-    is_active: true
-  }]);
-
-  if (error) {
-    alert("Car save failed: " + error.message);
+  if (file2 && !file2.type.startsWith("image/")) {
+    alert("Please select a valid second image.");
     return;
   }
 
-  alert("Car added successfully!");
+  const uploadPhoto = async (file, suffix) => {
+    if (!file) return null;
 
-  document.getElementById("carName").value = "";
-  document.getElementById("carPrice").value = "";
-  document.getElementById("originalPrice").value = "";
-  document.getElementById("carDescription").value = "";
-  document.getElementById("carImageFile").value = "";
+    const extension = file.name.split(".").pop();
 
-  loadCars();
+    const filePath =
+      `${Date.now()}-${suffix}-${Math.random().toString(36).slice(2)}.${extension}`;
+
+    const { error } = await db.storage
+      .from("car-images")
+      .upload(filePath, file, {
+        contentType: file.type,
+        upsert: false
+      });
+
+    if (error) throw error;
+
+    const { data } = db.storage
+      .from("car-images")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  try {
+    const imageUrl = await uploadPhoto(file1, "first");
+    const secondImageUrl = await uploadPhoto(file2, "second");
+
+    const { error } = await db.from("cars").insert([{
+      name,
+      price,
+      original_price: originalPrice,
+      description,
+      category,
+      image_url: imageUrl,
+      second_image_url: secondImageUrl,
+      is_active: true
+    }]);
+
+    if (error) throw error;
+
+    alert("Car added successfully with photos!");
+
+    document.getElementById("carName").value = "";
+    document.getElementById("carPrice").value = "";
+    document.getElementById("originalPrice").value = "";
+    document.getElementById("carDescription").value = "";
+    document.getElementById("carImageFile").value = "";
+    document.getElementById("carImageFile2").value = "";
+
+    loadCars();
+
+  } catch (error) {
+    alert("Car upload failed: " + error.message);
+  }
 }
 
 // ============================
@@ -109,7 +133,8 @@ async function addCar() {
 // ============================
 
 async function loadCars() {
-  console.log("NEW PRICE EDITING VERSION LOADED");
+  console.log("UPDATED ADMIN PRICE EDITING VERSION LOADED");
+
   const { data, error } = await db
     .from("cars")
     .select("*")
@@ -121,6 +146,9 @@ async function loadCars() {
   }
 
   const container = document.getElementById("adminCars");
+
+  if (!container) return;
+
   container.innerHTML = "";
 
   (data || []).forEach(car => {
@@ -222,6 +250,7 @@ async function updateCarPrice(id, originalValue, priceValue, button) {
   }
 
   alert("Car price updated successfully!");
+
   loadCars();
 }
 
@@ -243,6 +272,7 @@ async function deleteCar(id) {
   }
 
   alert("Car deleted successfully!");
+
   loadCars();
 }
 
@@ -267,7 +297,9 @@ async function addAccount() {
   }
 
   const extension = file.name.split(".").pop();
-  const filePath = `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+
+  const filePath =
+    `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
 
   const { error: uploadError } = await db.storage
     .from("account-videos")
@@ -286,9 +318,9 @@ async function addAccount() {
     .getPublicUrl(filePath);
 
   const { error } = await db.from("accounts").insert([{
-    name: name,
-    price: price,
-    description: description,
+    name,
+    price,
+    description,
     video_url: videoData.publicUrl,
     is_active: true
   }]);
@@ -352,7 +384,13 @@ async function loadAccounts() {
     deleteButton.textContent = "DELETE ACCOUNT";
     deleteButton.onclick = () => deleteAccount(account.id);
 
-    item.append(name, price, description, video, deleteButton);
+    item.append(
+      name,
+      price,
+      description,
+      video,
+      deleteButton
+    );
 
     container.appendChild(item);
   });
@@ -376,6 +414,7 @@ async function deleteAccount(id) {
   }
 
   alert("Account deleted successfully!");
+
   loadAccounts();
 }
 
@@ -387,3 +426,5 @@ async function logoutAdmin() {
   await db.auth.signOut();
   location.reload();
 }
+
+
