@@ -1,8 +1,3 @@
-const SUPABASE_URL = "https://mokjbshrwitinabzudrt.supabase.co";
-const SUPABASE_KEY = "sb_publishable_EBjXonUcfYLRLQQNw1bV0A_kPaSJ0KN";
-
-
-
 // =====================================
 // SUPABASE CONFIGURATION
 // =====================================
@@ -66,14 +61,9 @@ function openCarDetails(car) {
     return;
   }
 
-  const url = new URL(
-    "view-car-details.html",
-    window.location.href
-  );
-
-  url.searchParams.set("id", car.id);
-
-  window.open(url.href, "_blank");
+  const url = new URL("view-car-details.html", window.location.href);
+  url.searchParams.set("id", String(car.id));
+  window.open(url.href, "_blank", "noopener");
 }
 
 
